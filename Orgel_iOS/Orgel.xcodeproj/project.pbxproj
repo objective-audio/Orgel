@@ -1,0 +1,666 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B6C574812BABC90A004ACE94 /* Orgel.h in Headers */ = {isa = PBXBuildFile; fileRef = B6C574802BABC90A004ACE94 /* Orgel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B6C574D62BABC9ED004ACE94 /* CollectionAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574922BABC9ED004ACE94 /* CollectionAdditions.swift */; };
+		B6C574D72BABC9ED004ACE94 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574932BABC9ED004ACE94 /* Fetcher.swift */; };
+		B6C574D82BABC9ED004ACE94 /* Sleeping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574942BABC9ED004ACE94 /* Sleeping.swift */; };
+		B6C574D92BABC9ED004ACE94 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574952BABC9ED004ACE94 /* Weak.swift */; };
+		B6C574DA2BABC9ED004ACE94 /* FetchedResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */; };
+		B6C574DB2BABC9ED004ACE94 /* FetchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574982BABC9ED004ACE94 /* FetchOption.swift */; };
+		B6C574DC2BABC9ED004ACE94 /* LoadedIdPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */; };
+		B6C574DD2BABC9ED004ACE94 /* OrgelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */; };
+		B6C574DE2BABC9ED004ACE94 /* OrgelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */; };
+		B6C574DF2BABC9ED004ACE94 /* OrgelExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */; };
+		B6C574E02BABC9ED004ACE94 /* OrgelInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749D2BABC9ED004ACE94 /* OrgelInfo.swift */; };
+		B6C574E12BABC9ED004ACE94 /* SerialTaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749E2BABC9ED004ACE94 /* SerialTaskQueue.swift */; };
+		B6C574E22BABC9ED004ACE94 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A02BABC9ED004ACE94 /* Attribute.swift */; };
+		B6C574E32BABC9ED004ACE94 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A12BABC9ED004ACE94 /* Entity.swift */; };
+		B6C574E42BABC9ED004ACE94 /* Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A22BABC9ED004ACE94 /* Index.swift */; };
+		B6C574E52BABC9ED004ACE94 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A32BABC9ED004ACE94 /* Model.swift */; };
+		B6C574E62BABC9ED004ACE94 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A42BABC9ED004ACE94 /* Relation.swift */; };
+		B6C574E72BABC9ED004ACE94 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A52BABC9ED004ACE94 /* Version.swift */; };
+		B6C574E82BABC9ED004ACE94 /* ObjectCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A72BABC9ED004ACE94 /* ObjectCodable.swift */; };
+		B6C574E92BABC9ED004ACE94 /* ObjectDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A82BABC9ED004ACE94 /* ObjectDecoder.swift */; };
+		B6C574EA2BABC9ED004ACE94 /* ObjectEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574A92BABC9ED004ACE94 /* ObjectEncoder.swift */; };
+		B6C574EB2BABC9ED004ACE94 /* LoadingObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574AB2BABC9ED004ACE94 /* LoadingObjectData.swift */; };
+		B6C574EC2BABC9ED004ACE94 /* ObjectAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574AC2BABC9ED004ACE94 /* ObjectAction.swift */; };
+		B6C574ED2BABC9ED004ACE94 /* RawSyncedObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574AD2BABC9ED004ACE94 /* RawSyncedObjectData.swift */; };
+		B6C574EE2BABC9ED004ACE94 /* SavingObjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574AE2BABC9ED004ACE94 /* SavingObjectData.swift */; };
+		B6C574EF2BABC9ED004ACE94 /* LoadingObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B02BABC9ED004ACE94 /* LoadingObjectId.swift */; };
+		B6C574F02BABC9ED004ACE94 /* ObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B12BABC9ED004ACE94 /* ObjectId.swift */; };
+		B6C574F12BABC9ED004ACE94 /* StableId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B22BABC9ED004ACE94 /* StableId.swift */; };
+		B6C574F22BABC9ED004ACE94 /* SyncedObjectId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B32BABC9ED004ACE94 /* SyncedObjectId.swift */; };
+		B6C574F32BABC9ED004ACE94 /* TemporaryId.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B42BABC9ED004ACE94 /* TemporaryId.swift */; };
+		B6C574F42BABC9ED004ACE94 /* ObjectEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B62BABC9ED004ACE94 /* ObjectEvent.swift */; };
+		B6C574F52BABC9ED004ACE94 /* ReadOnlyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B72BABC9ED004ACE94 /* ReadOnlyObject.swift */; };
+		B6C574F62BABC9ED004ACE94 /* SyncedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B82BABC9ED004ACE94 /* SyncedObject.swift */; };
+		B6C574F72BABC9ED004ACE94 /* SyncedObjectStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574B92BABC9ED004ACE94 /* SyncedObjectStatus.swift */; };
+		B6C574F82BABC9ED004ACE94 /* SQLColumnNameAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574BB2BABC9ED004ACE94 /* SQLColumnNameAdditions.swift */; };
+		B6C574F92BABC9ED004ACE94 /* SQLiteExecutorAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574BC2BABC9ED004ACE94 /* SQLiteExecutorAdditions.swift */; };
+		B6C574FA2BABC9ED004ACE94 /* SQLiteExecutorOrgelAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574BD2BABC9ED004ACE94 /* SQLiteExecutorOrgelAdditions.swift */; };
+		B6C574FB2BABC9ED004ACE94 /* SQLParameterNameAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574BE2BABC9ED004ACE94 /* SQLParameterNameAdditions.swift */; };
+		B6C574FC2BABC9ED004ACE94 /* SQLValueAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574BF2BABC9ED004ACE94 /* SQLValueAdditions.swift */; };
+		B6C574FD2BABC9ED004ACE94 /* SQLWhereAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C02BABC9ED004ACE94 /* SQLWhereAdditions.swift */; };
+		B6C574FE2BABC9ED004ACE94 /* SQLiteError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C22BABC9ED004ACE94 /* SQLiteError.swift */; };
+		B6C574FF2BABC9ED004ACE94 /* SQLiteExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C32BABC9ED004ACE94 /* SQLiteExecutor.swift */; };
+		B6C575002BABC9ED004ACE94 /* SQLiteIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C42BABC9ED004ACE94 /* SQLiteIterator.swift */; };
+		B6C575012BABC9ED004ACE94 /* SQLiteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C52BABC9ED004ACE94 /* SQLiteResult.swift */; };
+		B6C575022BABC9ED004ACE94 /* SQLColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C72BABC9ED004ACE94 /* SQLColumn.swift */; };
+		B6C575032BABC9ED004ACE94 /* SQLExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C82BABC9ED004ACE94 /* SQLExpression.swift */; };
+		B6C575042BABC9ED004ACE94 /* SQLField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574C92BABC9ED004ACE94 /* SQLField.swift */; };
+		B6C575052BABC9ED004ACE94 /* SQLIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CA2BABC9ED004ACE94 /* SQLIndex.swift */; };
+		B6C575062BABC9ED004ACE94 /* SQLInSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CB2BABC9ED004ACE94 /* SQLInSource.swift */; };
+		B6C575072BABC9ED004ACE94 /* SQLOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CC2BABC9ED004ACE94 /* SQLOperator.swift */; };
+		B6C575082BABC9ED004ACE94 /* SQLParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CD2BABC9ED004ACE94 /* SQLParameter.swift */; };
+		B6C575092BABC9ED004ACE94 /* SQLQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CE2BABC9ED004ACE94 /* SQLQuery.swift */; };
+		B6C5750A2BABC9ED004ACE94 /* SQLSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574CF2BABC9ED004ACE94 /* SQLSelect.swift */; };
+		B6C5750B2BABC9ED004ACE94 /* SQLTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D02BABC9ED004ACE94 /* SQLTable.swift */; };
+		B6C5750C2BABC9ED004ACE94 /* SQLUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D12BABC9ED004ACE94 /* SQLUpdate.swift */; };
+		B6C5750D2BABC9ED004ACE94 /* SQLValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D22BABC9ED004ACE94 /* SQLValue.swift */; };
+		B6C5750E2BABC9ED004ACE94 /* SQLWhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D32BABC9ED004ACE94 /* SQLWhere.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B6C5747D2BABC90A004ACE94 /* Orgel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Orgel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6C574802BABC90A004ACE94 /* Orgel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Orgel.h; sourceTree = "<group>"; };
+		B6C574922BABC9ED004ACE94 /* CollectionAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionAdditions.swift; sourceTree = "<group>"; };
+		B6C574932BABC9ED004ACE94 /* Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
+		B6C574942BABC9ED004ACE94 /* Sleeping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sleeping.swift; sourceTree = "<group>"; };
+		B6C574952BABC9ED004ACE94 /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedResultData.swift; sourceTree = "<group>"; };
+		B6C574982BABC9ED004ACE94 /* FetchOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOption.swift; sourceTree = "<group>"; };
+		B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadedIdPool.swift; sourceTree = "<group>"; };
+		B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelContainer.swift; sourceTree = "<group>"; };
+		B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelData.swift; sourceTree = "<group>"; };
+		B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelExecutor.swift; sourceTree = "<group>"; };
+		B6C5749D2BABC9ED004ACE94 /* OrgelInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelInfo.swift; sourceTree = "<group>"; };
+		B6C5749E2BABC9ED004ACE94 /* SerialTaskQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerialTaskQueue.swift; sourceTree = "<group>"; };
+		B6C574A02BABC9ED004ACE94 /* Attribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
+		B6C574A12BABC9ED004ACE94 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		B6C574A22BABC9ED004ACE94 /* Index.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Index.swift; sourceTree = "<group>"; };
+		B6C574A32BABC9ED004ACE94 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		B6C574A42BABC9ED004ACE94 /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
+		B6C574A52BABC9ED004ACE94 /* Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		B6C574A72BABC9ED004ACE94 /* ObjectCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectCodable.swift; sourceTree = "<group>"; };
+		B6C574A82BABC9ED004ACE94 /* ObjectDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectDecoder.swift; sourceTree = "<group>"; };
+		B6C574A92BABC9ED004ACE94 /* ObjectEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectEncoder.swift; sourceTree = "<group>"; };
+		B6C574AB2BABC9ED004ACE94 /* LoadingObjectData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingObjectData.swift; sourceTree = "<group>"; };
+		B6C574AC2BABC9ED004ACE94 /* ObjectAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectAction.swift; sourceTree = "<group>"; };
+		B6C574AD2BABC9ED004ACE94 /* RawSyncedObjectData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawSyncedObjectData.swift; sourceTree = "<group>"; };
+		B6C574AE2BABC9ED004ACE94 /* SavingObjectData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavingObjectData.swift; sourceTree = "<group>"; };
+		B6C574B02BABC9ED004ACE94 /* LoadingObjectId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingObjectId.swift; sourceTree = "<group>"; };
+		B6C574B12BABC9ED004ACE94 /* ObjectId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectId.swift; sourceTree = "<group>"; };
+		B6C574B22BABC9ED004ACE94 /* StableId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StableId.swift; sourceTree = "<group>"; };
+		B6C574B32BABC9ED004ACE94 /* SyncedObjectId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncedObjectId.swift; sourceTree = "<group>"; };
+		B6C574B42BABC9ED004ACE94 /* TemporaryId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryId.swift; sourceTree = "<group>"; };
+		B6C574B62BABC9ED004ACE94 /* ObjectEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectEvent.swift; sourceTree = "<group>"; };
+		B6C574B72BABC9ED004ACE94 /* ReadOnlyObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadOnlyObject.swift; sourceTree = "<group>"; };
+		B6C574B82BABC9ED004ACE94 /* SyncedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncedObject.swift; sourceTree = "<group>"; };
+		B6C574B92BABC9ED004ACE94 /* SyncedObjectStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncedObjectStatus.swift; sourceTree = "<group>"; };
+		B6C574BB2BABC9ED004ACE94 /* SQLColumnNameAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLColumnNameAdditions.swift; sourceTree = "<group>"; };
+		B6C574BC2BABC9ED004ACE94 /* SQLiteExecutorAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteExecutorAdditions.swift; sourceTree = "<group>"; };
+		B6C574BD2BABC9ED004ACE94 /* SQLiteExecutorOrgelAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteExecutorOrgelAdditions.swift; sourceTree = "<group>"; };
+		B6C574BE2BABC9ED004ACE94 /* SQLParameterNameAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLParameterNameAdditions.swift; sourceTree = "<group>"; };
+		B6C574BF2BABC9ED004ACE94 /* SQLValueAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLValueAdditions.swift; sourceTree = "<group>"; };
+		B6C574C02BABC9ED004ACE94 /* SQLWhereAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLWhereAdditions.swift; sourceTree = "<group>"; };
+		B6C574C22BABC9ED004ACE94 /* SQLiteError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteError.swift; sourceTree = "<group>"; };
+		B6C574C32BABC9ED004ACE94 /* SQLiteExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteExecutor.swift; sourceTree = "<group>"; };
+		B6C574C42BABC9ED004ACE94 /* SQLiteIterator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteIterator.swift; sourceTree = "<group>"; };
+		B6C574C52BABC9ED004ACE94 /* SQLiteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteResult.swift; sourceTree = "<group>"; };
+		B6C574C72BABC9ED004ACE94 /* SQLColumn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLColumn.swift; sourceTree = "<group>"; };
+		B6C574C82BABC9ED004ACE94 /* SQLExpression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLExpression.swift; sourceTree = "<group>"; };
+		B6C574C92BABC9ED004ACE94 /* SQLField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLField.swift; sourceTree = "<group>"; };
+		B6C574CA2BABC9ED004ACE94 /* SQLIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLIndex.swift; sourceTree = "<group>"; };
+		B6C574CB2BABC9ED004ACE94 /* SQLInSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLInSource.swift; sourceTree = "<group>"; };
+		B6C574CC2BABC9ED004ACE94 /* SQLOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLOperator.swift; sourceTree = "<group>"; };
+		B6C574CD2BABC9ED004ACE94 /* SQLParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLParameter.swift; sourceTree = "<group>"; };
+		B6C574CE2BABC9ED004ACE94 /* SQLQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLQuery.swift; sourceTree = "<group>"; };
+		B6C574CF2BABC9ED004ACE94 /* SQLSelect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLSelect.swift; sourceTree = "<group>"; };
+		B6C574D02BABC9ED004ACE94 /* SQLTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLTable.swift; sourceTree = "<group>"; };
+		B6C574D12BABC9ED004ACE94 /* SQLUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLUpdate.swift; sourceTree = "<group>"; };
+		B6C574D22BABC9ED004ACE94 /* SQLValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLValue.swift; sourceTree = "<group>"; };
+		B6C574D32BABC9ED004ACE94 /* SQLWhere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLWhere.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6C5747A2BABC90A004ACE94 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B6C574732BABC90A004ACE94 = {
+			isa = PBXGroup;
+			children = (
+				B6C5747F2BABC90A004ACE94 /* Orgel */,
+				B6C5747E2BABC90A004ACE94 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B6C5747E2BABC90A004ACE94 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6C5747D2BABC90A004ACE94 /* Orgel.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6C5747F2BABC90A004ACE94 /* Orgel */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574D52BABC9ED004ACE94 /* Orgel */,
+				B6C574802BABC90A004ACE94 /* Orgel.h */,
+			);
+			path = Orgel;
+			sourceTree = "<group>";
+		};
+		B6C574962BABC9ED004ACE94 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574922BABC9ED004ACE94 /* CollectionAdditions.swift */,
+				B6C574932BABC9ED004ACE94 /* Fetcher.swift */,
+				B6C574942BABC9ED004ACE94 /* Sleeping.swift */,
+				B6C574952BABC9ED004ACE94 /* Weak.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		B6C5749F2BABC9ED004ACE94 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */,
+				B6C574982BABC9ED004ACE94 /* FetchOption.swift */,
+				B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */,
+				B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */,
+				B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */,
+				B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */,
+				B6C5749D2BABC9ED004ACE94 /* OrgelInfo.swift */,
+				B6C5749E2BABC9ED004ACE94 /* SerialTaskQueue.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		B6C574A62BABC9ED004ACE94 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574A02BABC9ED004ACE94 /* Attribute.swift */,
+				B6C574A12BABC9ED004ACE94 /* Entity.swift */,
+				B6C574A22BABC9ED004ACE94 /* Index.swift */,
+				B6C574A32BABC9ED004ACE94 /* Model.swift */,
+				B6C574A42BABC9ED004ACE94 /* Relation.swift */,
+				B6C574A52BABC9ED004ACE94 /* Version.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B6C574AA2BABC9ED004ACE94 /* Coding */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574A72BABC9ED004ACE94 /* ObjectCodable.swift */,
+				B6C574A82BABC9ED004ACE94 /* ObjectDecoder.swift */,
+				B6C574A92BABC9ED004ACE94 /* ObjectEncoder.swift */,
+			);
+			path = Coding;
+			sourceTree = "<group>";
+		};
+		B6C574AF2BABC9ED004ACE94 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574AB2BABC9ED004ACE94 /* LoadingObjectData.swift */,
+				B6C574AC2BABC9ED004ACE94 /* ObjectAction.swift */,
+				B6C574AD2BABC9ED004ACE94 /* RawSyncedObjectData.swift */,
+				B6C574AE2BABC9ED004ACE94 /* SavingObjectData.swift */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		B6C574B52BABC9ED004ACE94 /* id */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574B02BABC9ED004ACE94 /* LoadingObjectId.swift */,
+				B6C574B12BABC9ED004ACE94 /* ObjectId.swift */,
+				B6C574B22BABC9ED004ACE94 /* StableId.swift */,
+				B6C574B32BABC9ED004ACE94 /* SyncedObjectId.swift */,
+				B6C574B42BABC9ED004ACE94 /* TemporaryId.swift */,
+			);
+			path = id;
+			sourceTree = "<group>";
+		};
+		B6C574BA2BABC9ED004ACE94 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574AA2BABC9ED004ACE94 /* Coding */,
+				B6C574AF2BABC9ED004ACE94 /* data */,
+				B6C574B52BABC9ED004ACE94 /* id */,
+				B6C574B62BABC9ED004ACE94 /* ObjectEvent.swift */,
+				B6C574B72BABC9ED004ACE94 /* ReadOnlyObject.swift */,
+				B6C574B82BABC9ED004ACE94 /* SyncedObject.swift */,
+				B6C574B92BABC9ED004ACE94 /* SyncedObjectStatus.swift */,
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
+		B6C574C12BABC9ED004ACE94 /* SQLAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574BB2BABC9ED004ACE94 /* SQLColumnNameAdditions.swift */,
+				B6C574BC2BABC9ED004ACE94 /* SQLiteExecutorAdditions.swift */,
+				B6C574BD2BABC9ED004ACE94 /* SQLiteExecutorOrgelAdditions.swift */,
+				B6C574BE2BABC9ED004ACE94 /* SQLParameterNameAdditions.swift */,
+				B6C574BF2BABC9ED004ACE94 /* SQLValueAdditions.swift */,
+				B6C574C02BABC9ED004ACE94 /* SQLWhereAdditions.swift */,
+			);
+			path = SQLAdditions;
+			sourceTree = "<group>";
+		};
+		B6C574C62BABC9ED004ACE94 /* SQLite */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574C22BABC9ED004ACE94 /* SQLiteError.swift */,
+				B6C574C32BABC9ED004ACE94 /* SQLiteExecutor.swift */,
+				B6C574C42BABC9ED004ACE94 /* SQLiteIterator.swift */,
+				B6C574C52BABC9ED004ACE94 /* SQLiteResult.swift */,
+			);
+			path = SQLite;
+			sourceTree = "<group>";
+		};
+		B6C574D42BABC9ED004ACE94 /* SQLTypes */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574C72BABC9ED004ACE94 /* SQLColumn.swift */,
+				B6C574C82BABC9ED004ACE94 /* SQLExpression.swift */,
+				B6C574C92BABC9ED004ACE94 /* SQLField.swift */,
+				B6C574CA2BABC9ED004ACE94 /* SQLIndex.swift */,
+				B6C574CB2BABC9ED004ACE94 /* SQLInSource.swift */,
+				B6C574CC2BABC9ED004ACE94 /* SQLOperator.swift */,
+				B6C574CD2BABC9ED004ACE94 /* SQLParameter.swift */,
+				B6C574CE2BABC9ED004ACE94 /* SQLQuery.swift */,
+				B6C574CF2BABC9ED004ACE94 /* SQLSelect.swift */,
+				B6C574D02BABC9ED004ACE94 /* SQLTable.swift */,
+				B6C574D12BABC9ED004ACE94 /* SQLUpdate.swift */,
+				B6C574D22BABC9ED004ACE94 /* SQLValue.swift */,
+				B6C574D32BABC9ED004ACE94 /* SQLWhere.swift */,
+			);
+			path = SQLTypes;
+			sourceTree = "<group>";
+		};
+		B6C574D52BABC9ED004ACE94 /* Orgel */ = {
+			isa = PBXGroup;
+			children = (
+				B6C574962BABC9ED004ACE94 /* Common */,
+				B6C5749F2BABC9ED004ACE94 /* Main */,
+				B6C574A62BABC9ED004ACE94 /* Model */,
+				B6C574BA2BABC9ED004ACE94 /* Object */,
+				B6C574C12BABC9ED004ACE94 /* SQLAdditions */,
+				B6C574C62BABC9ED004ACE94 /* SQLite */,
+				B6C574D42BABC9ED004ACE94 /* SQLTypes */,
+			);
+			name = Orgel;
+			path = ../../Orgel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B6C574782BABC90A004ACE94 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6C574812BABC90A004ACE94 /* Orgel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B6C5747C2BABC90A004ACE94 /* Orgel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6C574842BABC90A004ACE94 /* Build configuration list for PBXNativeTarget "Orgel" */;
+			buildPhases = (
+				B6C574782BABC90A004ACE94 /* Headers */,
+				B6C574792BABC90A004ACE94 /* Sources */,
+				B6C5747A2BABC90A004ACE94 /* Frameworks */,
+				B6C5747B2BABC90A004ACE94 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Orgel;
+			productName = Orgel;
+			productReference = B6C5747D2BABC90A004ACE94 /* Orgel.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6C574742BABC90A004ACE94 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					B6C5747C2BABC90A004ACE94 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = B6C574772BABC90A004ACE94 /* Build configuration list for PBXProject "Orgel" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B6C574732BABC90A004ACE94;
+			productRefGroup = B6C5747E2BABC90A004ACE94 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6C5747C2BABC90A004ACE94 /* Orgel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B6C5747B2BABC90A004ACE94 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B6C574792BABC90A004ACE94 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6C5750C2BABC9ED004ACE94 /* SQLUpdate.swift in Sources */,
+				B6C574EC2BABC9ED004ACE94 /* ObjectAction.swift in Sources */,
+				B6C574D82BABC9ED004ACE94 /* Sleeping.swift in Sources */,
+				B6C574D92BABC9ED004ACE94 /* Weak.swift in Sources */,
+				B6C575082BABC9ED004ACE94 /* SQLParameter.swift in Sources */,
+				B6C575002BABC9ED004ACE94 /* SQLiteIterator.swift in Sources */,
+				B6C5750D2BABC9ED004ACE94 /* SQLValue.swift in Sources */,
+				B6C5750B2BABC9ED004ACE94 /* SQLTable.swift in Sources */,
+				B6C5750A2BABC9ED004ACE94 /* SQLSelect.swift in Sources */,
+				B6C574E32BABC9ED004ACE94 /* Entity.swift in Sources */,
+				B6C574FD2BABC9ED004ACE94 /* SQLWhereAdditions.swift in Sources */,
+				B6C574F52BABC9ED004ACE94 /* ReadOnlyObject.swift in Sources */,
+				B6C574E92BABC9ED004ACE94 /* ObjectDecoder.swift in Sources */,
+				B6C5750E2BABC9ED004ACE94 /* SQLWhere.swift in Sources */,
+				B6C574F72BABC9ED004ACE94 /* SyncedObjectStatus.swift in Sources */,
+				B6C574ED2BABC9ED004ACE94 /* RawSyncedObjectData.swift in Sources */,
+				B6C574F32BABC9ED004ACE94 /* TemporaryId.swift in Sources */,
+				B6C574FC2BABC9ED004ACE94 /* SQLValueAdditions.swift in Sources */,
+				B6C574EE2BABC9ED004ACE94 /* SavingObjectData.swift in Sources */,
+				B6C574F02BABC9ED004ACE94 /* ObjectId.swift in Sources */,
+				B6C574DC2BABC9ED004ACE94 /* LoadedIdPool.swift in Sources */,
+				B6C574F12BABC9ED004ACE94 /* StableId.swift in Sources */,
+				B6C574E82BABC9ED004ACE94 /* ObjectCodable.swift in Sources */,
+				B6C575052BABC9ED004ACE94 /* SQLIndex.swift in Sources */,
+				B6C574E62BABC9ED004ACE94 /* Relation.swift in Sources */,
+				B6C574DD2BABC9ED004ACE94 /* OrgelContainer.swift in Sources */,
+				B6C574DF2BABC9ED004ACE94 /* OrgelExecutor.swift in Sources */,
+				B6C574EF2BABC9ED004ACE94 /* LoadingObjectId.swift in Sources */,
+				B6C574F42BABC9ED004ACE94 /* ObjectEvent.swift in Sources */,
+				B6C574DA2BABC9ED004ACE94 /* FetchedResultData.swift in Sources */,
+				B6C574E52BABC9ED004ACE94 /* Model.swift in Sources */,
+				B6C574F82BABC9ED004ACE94 /* SQLColumnNameAdditions.swift in Sources */,
+				B6C574FE2BABC9ED004ACE94 /* SQLiteError.swift in Sources */,
+				B6C574E02BABC9ED004ACE94 /* OrgelInfo.swift in Sources */,
+				B6C574E72BABC9ED004ACE94 /* Version.swift in Sources */,
+				B6C575022BABC9ED004ACE94 /* SQLColumn.swift in Sources */,
+				B6C575092BABC9ED004ACE94 /* SQLQuery.swift in Sources */,
+				B6C574EB2BABC9ED004ACE94 /* LoadingObjectData.swift in Sources */,
+				B6C574F62BABC9ED004ACE94 /* SyncedObject.swift in Sources */,
+				B6C574D62BABC9ED004ACE94 /* CollectionAdditions.swift in Sources */,
+				B6C574FF2BABC9ED004ACE94 /* SQLiteExecutor.swift in Sources */,
+				B6C574E12BABC9ED004ACE94 /* SerialTaskQueue.swift in Sources */,
+				B6C575032BABC9ED004ACE94 /* SQLExpression.swift in Sources */,
+				B6C575072BABC9ED004ACE94 /* SQLOperator.swift in Sources */,
+				B6C574DE2BABC9ED004ACE94 /* OrgelData.swift in Sources */,
+				B6C574FB2BABC9ED004ACE94 /* SQLParameterNameAdditions.swift in Sources */,
+				B6C574D72BABC9ED004ACE94 /* Fetcher.swift in Sources */,
+				B6C574E22BABC9ED004ACE94 /* Attribute.swift in Sources */,
+				B6C574DB2BABC9ED004ACE94 /* FetchOption.swift in Sources */,
+				B6C574F92BABC9ED004ACE94 /* SQLiteExecutorAdditions.swift in Sources */,
+				B6C574EA2BABC9ED004ACE94 /* ObjectEncoder.swift in Sources */,
+				B6C575062BABC9ED004ACE94 /* SQLInSource.swift in Sources */,
+				B6C574E42BABC9ED004ACE94 /* Index.swift in Sources */,
+				B6C574FA2BABC9ED004ACE94 /* SQLiteExecutorOrgelAdditions.swift in Sources */,
+				B6C575012BABC9ED004ACE94 /* SQLiteResult.swift in Sources */,
+				B6C574F22BABC9ED004ACE94 /* SyncedObjectId.swift in Sources */,
+				B6C575042BABC9ED004ACE94 /* SQLField.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B6C574822BABC90A004ACE94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B6C574832BABC90A004ACE94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B6C574852BABC90A004ACE94 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.objective-audio.Orgel";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6C574862BABC90A004ACE94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.objective-audio.Orgel";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6C574772BABC90A004ACE94 /* Build configuration list for PBXProject "Orgel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6C574822BABC90A004ACE94 /* Debug */,
+				B6C574832BABC90A004ACE94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6C574842BABC90A004ACE94 /* Build configuration list for PBXNativeTarget "Orgel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6C574852BABC90A004ACE94 /* Debug */,
+				B6C574862BABC90A004ACE94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B6C574742BABC90A004ACE94 /* Project object */;
+}

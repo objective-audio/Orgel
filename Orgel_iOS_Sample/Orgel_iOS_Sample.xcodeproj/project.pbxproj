@@ -1,0 +1,717 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B6376F232BABE79A002E3D30 /* Orgel_iOS_SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F222BABE79A002E3D30 /* Orgel_iOS_SampleApp.swift */; };
+		B6376F272BABE79B002E3D30 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6376F262BABE79B002E3D30 /* Assets.xcassets */; };
+		B6376F2A2BABE79B002E3D30 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6376F292BABE79B002E3D30 /* Preview Assets.xcassets */; };
+		B6376F682BABE80D002E3D30 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B6376F2E2BABE80D002E3D30 /* Localizable.xcstrings */; };
+		B6376F692BABE80D002E3D30 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F2F2BABE80D002E3D30 /* Localized.swift */; };
+		B6376F6A2BABE80D002E3D30 /* ObjectA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F302BABE80D002E3D30 /* ObjectA.swift */; };
+		B6376F6B2BABE80D002E3D30 /* ObjectB.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F312BABE80D002E3D30 /* ObjectB.swift */; };
+		B6376F6C2BABE80D002E3D30 /* OrgelAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F322BABE80D002E3D30 /* OrgelAdditions.swift */; };
+		B6376F6D2BABE80D002E3D30 /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F332BABE80D002E3D30 /* SampleModel.swift */; };
+		B6376F6E2BABE80D002E3D30 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F342BABE80D002E3D30 /* TextCell.swift */; };
+		B6376F6F2BABE80D002E3D30 /* TextNavigationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F352BABE80D002E3D30 /* TextNavigationCell.swift */; };
+		B6376F702BABE80D002E3D30 /* ObjectAtrributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F392BABE80D002E3D30 /* ObjectAtrributeCell.swift */; };
+		B6376F712BABE80D002E3D30 /* ObjectAttributeCellContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F3A2BABE80D002E3D30 /* ObjectAttributeCellContent.swift */; };
+		B6376F722BABE80D002E3D30 /* ObjectLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F3B2BABE80D002E3D30 /* ObjectLifetime.swift */; };
+		B6376F732BABE80D002E3D30 /* ObjectPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F3C2BABE80D002E3D30 /* ObjectPresenter.swift */; };
+		B6376F742BABE80D002E3D30 /* ObjectRelationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F3D2BABE80D002E3D30 /* ObjectRelationCell.swift */; };
+		B6376F752BABE80D002E3D30 /* ObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F3E2BABE80D002E3D30 /* ObjectView.swift */; };
+		B6376F762BABE80D002E3D30 /* ObjectSelectionLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F402BABE80D002E3D30 /* ObjectSelectionLifetime.swift */; };
+		B6376F772BABE80D002E3D30 /* ObjectSelectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F412BABE80D002E3D30 /* ObjectSelectionPresenter.swift */; };
+		B6376F782BABE80D002E3D30 /* ObjectSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F422BABE80D002E3D30 /* ObjectSelectionView.swift */; };
+		B6376F792BABE80D002E3D30 /* RelationObjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F442BABE80D002E3D30 /* RelationObjectCell.swift */; };
+		B6376F7A2BABE80D002E3D30 /* RelationObjectPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F452BABE80D002E3D30 /* RelationObjectPresenter.swift */; };
+		B6376F7B2BABE80D002E3D30 /* RelationLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F472BABE80D002E3D30 /* RelationLifetime.swift */; };
+		B6376F7C2BABE80D002E3D30 /* RelationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F482BABE80D002E3D30 /* RelationPresenter.swift */; };
+		B6376F7D2BABE80D002E3D30 /* RelationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F492BABE80D002E3D30 /* RelationView.swift */; };
+		B6376F7E2BABE80D002E3D30 /* RootLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F4B2BABE80D002E3D30 /* RootLifecycle.swift */; };
+		B6376F7F2BABE80D002E3D30 /* RootPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F4C2BABE80D002E3D30 /* RootPresenter.swift */; };
+		B6376F802BABE80D002E3D30 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F4D2BABE80D002E3D30 /* RootView.swift */; };
+		B6376F812BABE80D002E3D30 /* RootFailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F4F2BABE80D002E3D30 /* RootFailureView.swift */; };
+		B6376F822BABE80D002E3D30 /* OrgelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F512BABE80D002E3D30 /* OrgelFactory.swift */; };
+		B6376F832BABE80D002E3D30 /* RootLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F522BABE80D002E3D30 /* RootLoader.swift */; };
+		B6376F842BABE80D002E3D30 /* RootLoadingLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F532BABE80D002E3D30 /* RootLoadingLifetime.swift */; };
+		B6376F852BABE80D002E3D30 /* RootLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F542BABE80D002E3D30 /* RootLoadingView.swift */; };
+		B6376F862BABE80D002E3D30 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F562BABE80D002E3D30 /* Interactor.swift */; };
+		B6376F872BABE80D002E3D30 /* RootNavgationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F572BABE80D002E3D30 /* RootNavgationPresenter.swift */; };
+		B6376F882BABE80D002E3D30 /* RootNavigationLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F582BABE80D002E3D30 /* RootNavigationLifecycle.swift */; };
+		B6376F892BABE80D002E3D30 /* RootNavigationLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F592BABE80D002E3D30 /* RootNavigationLifetime.swift */; };
+		B6376F8A2BABE80D002E3D30 /* RootNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F5A2BABE80D002E3D30 /* RootNavigationView.swift */; };
+		B6376F8B2BABE80D002E3D30 /* TopObjectACell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F5D2BABE80D002E3D30 /* TopObjectACell.swift */; };
+		B6376F8C2BABE80D002E3D30 /* TopObjectAPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F5E2BABE80D002E3D30 /* TopObjectAPresenter.swift */; };
+		B6376F8D2BABE80D002E3D30 /* TopObjectBCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F602BABE80D002E3D30 /* TopObjectBCell.swift */; };
+		B6376F8E2BABE80D002E3D30 /* TopObjectBPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F612BABE80D002E3D30 /* TopObjectBPresenter.swift */; };
+		B6376F8F2BABE80D002E3D30 /* TopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F632BABE80D002E3D30 /* TopPresenter.swift */; };
+		B6376F902BABE80D002E3D30 /* TopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F642BABE80D002E3D30 /* TopView.swift */; };
+		B6376F912BABE80D002E3D30 /* Lifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376F662BABE80D002E3D30 /* Lifetime.swift */; };
+		B6376F942BABE86E002E3D30 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B6376F932BABE86E002E3D30 /* Collections */; };
+		B6376F972BABE8D4002E3D30 /* Orgel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6376F962BABE8D4002E3D30 /* Orgel.framework */; };
+		B6376F982BABE8D4002E3D30 /* Orgel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6376F962BABE8D4002E3D30 /* Orgel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B6376F992BABE8D4002E3D30 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B6376F982BABE8D4002E3D30 /* Orgel.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B6376F1F2BABE79A002E3D30 /* Orgel_iOS_Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orgel_iOS_Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6376F222BABE79A002E3D30 /* Orgel_iOS_SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orgel_iOS_SampleApp.swift; sourceTree = "<group>"; };
+		B6376F262BABE79B002E3D30 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B6376F292BABE79B002E3D30 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B6376F2E2BABE80D002E3D30 /* Localizable.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B6376F2F2BABE80D002E3D30 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
+		B6376F302BABE80D002E3D30 /* ObjectA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectA.swift; sourceTree = "<group>"; };
+		B6376F312BABE80D002E3D30 /* ObjectB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectB.swift; sourceTree = "<group>"; };
+		B6376F322BABE80D002E3D30 /* OrgelAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelAdditions.swift; sourceTree = "<group>"; };
+		B6376F332BABE80D002E3D30 /* SampleModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
+		B6376F342BABE80D002E3D30 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		B6376F352BABE80D002E3D30 /* TextNavigationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNavigationCell.swift; sourceTree = "<group>"; };
+		B6376F392BABE80D002E3D30 /* ObjectAtrributeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectAtrributeCell.swift; sourceTree = "<group>"; };
+		B6376F3A2BABE80D002E3D30 /* ObjectAttributeCellContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectAttributeCellContent.swift; sourceTree = "<group>"; };
+		B6376F3B2BABE80D002E3D30 /* ObjectLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectLifetime.swift; sourceTree = "<group>"; };
+		B6376F3C2BABE80D002E3D30 /* ObjectPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectPresenter.swift; sourceTree = "<group>"; };
+		B6376F3D2BABE80D002E3D30 /* ObjectRelationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectRelationCell.swift; sourceTree = "<group>"; };
+		B6376F3E2BABE80D002E3D30 /* ObjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectView.swift; sourceTree = "<group>"; };
+		B6376F402BABE80D002E3D30 /* ObjectSelectionLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSelectionLifetime.swift; sourceTree = "<group>"; };
+		B6376F412BABE80D002E3D30 /* ObjectSelectionPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSelectionPresenter.swift; sourceTree = "<group>"; };
+		B6376F422BABE80D002E3D30 /* ObjectSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSelectionView.swift; sourceTree = "<group>"; };
+		B6376F442BABE80D002E3D30 /* RelationObjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationObjectCell.swift; sourceTree = "<group>"; };
+		B6376F452BABE80D002E3D30 /* RelationObjectPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationObjectPresenter.swift; sourceTree = "<group>"; };
+		B6376F472BABE80D002E3D30 /* RelationLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationLifetime.swift; sourceTree = "<group>"; };
+		B6376F482BABE80D002E3D30 /* RelationPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationPresenter.swift; sourceTree = "<group>"; };
+		B6376F492BABE80D002E3D30 /* RelationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationView.swift; sourceTree = "<group>"; };
+		B6376F4B2BABE80D002E3D30 /* RootLifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootLifecycle.swift; sourceTree = "<group>"; };
+		B6376F4C2BABE80D002E3D30 /* RootPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootPresenter.swift; sourceTree = "<group>"; };
+		B6376F4D2BABE80D002E3D30 /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B6376F4F2BABE80D002E3D30 /* RootFailureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootFailureView.swift; sourceTree = "<group>"; };
+		B6376F512BABE80D002E3D30 /* OrgelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelFactory.swift; sourceTree = "<group>"; };
+		B6376F522BABE80D002E3D30 /* RootLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootLoader.swift; sourceTree = "<group>"; };
+		B6376F532BABE80D002E3D30 /* RootLoadingLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootLoadingLifetime.swift; sourceTree = "<group>"; };
+		B6376F542BABE80D002E3D30 /* RootLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootLoadingView.swift; sourceTree = "<group>"; };
+		B6376F562BABE80D002E3D30 /* Interactor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
+		B6376F572BABE80D002E3D30 /* RootNavgationPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavgationPresenter.swift; sourceTree = "<group>"; };
+		B6376F582BABE80D002E3D30 /* RootNavigationLifecycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationLifecycle.swift; sourceTree = "<group>"; };
+		B6376F592BABE80D002E3D30 /* RootNavigationLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationLifetime.swift; sourceTree = "<group>"; };
+		B6376F5A2BABE80D002E3D30 /* RootNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootNavigationView.swift; sourceTree = "<group>"; };
+		B6376F5D2BABE80D002E3D30 /* TopObjectACell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopObjectACell.swift; sourceTree = "<group>"; };
+		B6376F5E2BABE80D002E3D30 /* TopObjectAPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopObjectAPresenter.swift; sourceTree = "<group>"; };
+		B6376F602BABE80D002E3D30 /* TopObjectBCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopObjectBCell.swift; sourceTree = "<group>"; };
+		B6376F612BABE80D002E3D30 /* TopObjectBPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopObjectBPresenter.swift; sourceTree = "<group>"; };
+		B6376F632BABE80D002E3D30 /* TopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPresenter.swift; sourceTree = "<group>"; };
+		B6376F642BABE80D002E3D30 /* TopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopView.swift; sourceTree = "<group>"; };
+		B6376F662BABE80D002E3D30 /* Lifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifetime.swift; sourceTree = "<group>"; };
+		B6376F962BABE8D4002E3D30 /* Orgel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Orgel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6376F1C2BABE79A002E3D30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6376F972BABE8D4002E3D30 /* Orgel.framework in Frameworks */,
+				B6376F942BABE86E002E3D30 /* Collections in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B6376F142BABE755002E3D30 = {
+			isa = PBXGroup;
+			children = (
+				B6376F212BABE79A002E3D30 /* Orgel_iOS_Sample */,
+				B6376F202BABE79A002E3D30 /* Products */,
+				B6376F952BABE8D4002E3D30 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B6376F202BABE79A002E3D30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F1F2BABE79A002E3D30 /* Orgel_iOS_Sample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6376F212BABE79A002E3D30 /* Orgel_iOS_Sample */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F222BABE79A002E3D30 /* Orgel_iOS_SampleApp.swift */,
+				B6376F672BABE80D002E3D30 /* Orgel_Sample */,
+				B6376F262BABE79B002E3D30 /* Assets.xcassets */,
+				B6376F282BABE79B002E3D30 /* Preview Content */,
+			);
+			path = Orgel_iOS_Sample;
+			sourceTree = "<group>";
+		};
+		B6376F282BABE79B002E3D30 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F292BABE79B002E3D30 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B6376F362BABE80D002E3D30 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F2E2BABE80D002E3D30 /* Localizable.xcstrings */,
+				B6376F2F2BABE80D002E3D30 /* Localized.swift */,
+				B6376F302BABE80D002E3D30 /* ObjectA.swift */,
+				B6376F312BABE80D002E3D30 /* ObjectB.swift */,
+				B6376F322BABE80D002E3D30 /* OrgelAdditions.swift */,
+				B6376F332BABE80D002E3D30 /* SampleModel.swift */,
+				B6376F342BABE80D002E3D30 /* TextCell.swift */,
+				B6376F352BABE80D002E3D30 /* TextNavigationCell.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		B6376F372BABE80D002E3D30 /* DatabaseAdditions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DatabaseAdditions;
+			sourceTree = "<group>";
+		};
+		B6376F382BABE80D002E3D30 /* Lifecycle */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Lifecycle;
+			sourceTree = "<group>";
+		};
+		B6376F3F2BABE80D002E3D30 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F392BABE80D002E3D30 /* ObjectAtrributeCell.swift */,
+				B6376F3A2BABE80D002E3D30 /* ObjectAttributeCellContent.swift */,
+				B6376F3B2BABE80D002E3D30 /* ObjectLifetime.swift */,
+				B6376F3C2BABE80D002E3D30 /* ObjectPresenter.swift */,
+				B6376F3D2BABE80D002E3D30 /* ObjectRelationCell.swift */,
+				B6376F3E2BABE80D002E3D30 /* ObjectView.swift */,
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
+		B6376F432BABE80D002E3D30 /* ObjectSelection */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F402BABE80D002E3D30 /* ObjectSelectionLifetime.swift */,
+				B6376F412BABE80D002E3D30 /* ObjectSelectionPresenter.swift */,
+				B6376F422BABE80D002E3D30 /* ObjectSelectionView.swift */,
+			);
+			path = ObjectSelection;
+			sourceTree = "<group>";
+		};
+		B6376F462BABE80D002E3D30 /* RelationObject */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F442BABE80D002E3D30 /* RelationObjectCell.swift */,
+				B6376F452BABE80D002E3D30 /* RelationObjectPresenter.swift */,
+			);
+			path = RelationObject;
+			sourceTree = "<group>";
+		};
+		B6376F4A2BABE80D002E3D30 /* Relation */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F462BABE80D002E3D30 /* RelationObject */,
+				B6376F472BABE80D002E3D30 /* RelationLifetime.swift */,
+				B6376F482BABE80D002E3D30 /* RelationPresenter.swift */,
+				B6376F492BABE80D002E3D30 /* RelationView.swift */,
+			);
+			path = Relation;
+			sourceTree = "<group>";
+		};
+		B6376F4E2BABE80D002E3D30 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F4B2BABE80D002E3D30 /* RootLifecycle.swift */,
+				B6376F4C2BABE80D002E3D30 /* RootPresenter.swift */,
+				B6376F4D2BABE80D002E3D30 /* RootView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		B6376F502BABE80D002E3D30 /* RootFailure */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F4F2BABE80D002E3D30 /* RootFailureView.swift */,
+			);
+			path = RootFailure;
+			sourceTree = "<group>";
+		};
+		B6376F552BABE80D002E3D30 /* RootLoading */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F512BABE80D002E3D30 /* OrgelFactory.swift */,
+				B6376F522BABE80D002E3D30 /* RootLoader.swift */,
+				B6376F532BABE80D002E3D30 /* RootLoadingLifetime.swift */,
+				B6376F542BABE80D002E3D30 /* RootLoadingView.swift */,
+			);
+			path = RootLoading;
+			sourceTree = "<group>";
+		};
+		B6376F5B2BABE80D002E3D30 /* RootNavigation */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F562BABE80D002E3D30 /* Interactor.swift */,
+				B6376F572BABE80D002E3D30 /* RootNavgationPresenter.swift */,
+				B6376F582BABE80D002E3D30 /* RootNavigationLifecycle.swift */,
+				B6376F592BABE80D002E3D30 /* RootNavigationLifetime.swift */,
+				B6376F5A2BABE80D002E3D30 /* RootNavigationView.swift */,
+			);
+			path = RootNavigation;
+			sourceTree = "<group>";
+		};
+		B6376F5C2BABE80D002E3D30 /* Object */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Object;
+			sourceTree = "<group>";
+		};
+		B6376F5F2BABE80D002E3D30 /* ObjectA */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F5D2BABE80D002E3D30 /* TopObjectACell.swift */,
+				B6376F5E2BABE80D002E3D30 /* TopObjectAPresenter.swift */,
+			);
+			path = ObjectA;
+			sourceTree = "<group>";
+		};
+		B6376F622BABE80D002E3D30 /* ObjectB */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F602BABE80D002E3D30 /* TopObjectBCell.swift */,
+				B6376F612BABE80D002E3D30 /* TopObjectBPresenter.swift */,
+			);
+			path = ObjectB;
+			sourceTree = "<group>";
+		};
+		B6376F652BABE80D002E3D30 /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F5C2BABE80D002E3D30 /* Object */,
+				B6376F5F2BABE80D002E3D30 /* ObjectA */,
+				B6376F622BABE80D002E3D30 /* ObjectB */,
+				B6376F632BABE80D002E3D30 /* TopPresenter.swift */,
+				B6376F642BABE80D002E3D30 /* TopView.swift */,
+			);
+			path = Top;
+			sourceTree = "<group>";
+		};
+		B6376F672BABE80D002E3D30 /* Orgel_Sample */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F362BABE80D002E3D30 /* Common */,
+				B6376F372BABE80D002E3D30 /* DatabaseAdditions */,
+				B6376F382BABE80D002E3D30 /* Lifecycle */,
+				B6376F3F2BABE80D002E3D30 /* Object */,
+				B6376F432BABE80D002E3D30 /* ObjectSelection */,
+				B6376F4A2BABE80D002E3D30 /* Relation */,
+				B6376F4E2BABE80D002E3D30 /* Root */,
+				B6376F502BABE80D002E3D30 /* RootFailure */,
+				B6376F552BABE80D002E3D30 /* RootLoading */,
+				B6376F5B2BABE80D002E3D30 /* RootNavigation */,
+				B6376F652BABE80D002E3D30 /* Top */,
+				B6376F662BABE80D002E3D30 /* Lifetime.swift */,
+			);
+			name = Orgel_Sample;
+			path = ../../Orgel_Sample;
+			sourceTree = "<group>";
+		};
+		B6376F952BABE8D4002E3D30 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6376F962BABE8D4002E3D30 /* Orgel.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B6376F1E2BABE79A002E3D30 /* Orgel_iOS_Sample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6376F2D2BABE79B002E3D30 /* Build configuration list for PBXNativeTarget "Orgel_iOS_Sample" */;
+			buildPhases = (
+				B637708C2BAC0BD5002E3D30 /* ShellScript */,
+				B6376F1B2BABE79A002E3D30 /* Sources */,
+				B6376F1C2BABE79A002E3D30 /* Frameworks */,
+				B6376F1D2BABE79A002E3D30 /* Resources */,
+				B6376F992BABE8D4002E3D30 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Orgel_iOS_Sample;
+			packageProductDependencies = (
+				B6376F932BABE86E002E3D30 /* Collections */,
+			);
+			productName = Orgel_iOS_Sample;
+			productReference = B6376F1F2BABE79A002E3D30 /* Orgel_iOS_Sample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6376F152BABE755002E3D30 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					B6376F1E2BABE79A002E3D30 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = B6376F182BABE755002E3D30 /* Build configuration list for PBXProject "Orgel_iOS_Sample" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B6376F142BABE755002E3D30;
+			packageReferences = (
+				B6376F922BABE86E002E3D30 /* XCRemoteSwiftPackageReference "swift-collections" */,
+			);
+			productRefGroup = B6376F202BABE79A002E3D30 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6376F1E2BABE79A002E3D30 /* Orgel_iOS_Sample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B6376F1D2BABE79A002E3D30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6376F2A2BABE79B002E3D30 /* Preview Assets.xcassets in Resources */,
+				B6376F272BABE79B002E3D30 /* Assets.xcassets in Resources */,
+				B6376F682BABE80D002E3D30 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B637708C2BAC0BD5002E3D30 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n../script/format.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B6376F1B2BABE79A002E3D30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6376F782BABE80D002E3D30 /* ObjectSelectionView.swift in Sources */,
+				B6376F7E2BABE80D002E3D30 /* RootLifecycle.swift in Sources */,
+				B6376F7A2BABE80D002E3D30 /* RelationObjectPresenter.swift in Sources */,
+				B6376F742BABE80D002E3D30 /* ObjectRelationCell.swift in Sources */,
+				B6376F8C2BABE80D002E3D30 /* TopObjectAPresenter.swift in Sources */,
+				B6376F6F2BABE80D002E3D30 /* TextNavigationCell.swift in Sources */,
+				B6376F232BABE79A002E3D30 /* Orgel_iOS_SampleApp.swift in Sources */,
+				B6376F832BABE80D002E3D30 /* RootLoader.swift in Sources */,
+				B6376F8F2BABE80D002E3D30 /* TopPresenter.swift in Sources */,
+				B6376F842BABE80D002E3D30 /* RootLoadingLifetime.swift in Sources */,
+				B6376F912BABE80D002E3D30 /* Lifetime.swift in Sources */,
+				B6376F712BABE80D002E3D30 /* ObjectAttributeCellContent.swift in Sources */,
+				B6376F812BABE80D002E3D30 /* RootFailureView.swift in Sources */,
+				B6376F6D2BABE80D002E3D30 /* SampleModel.swift in Sources */,
+				B6376F882BABE80D002E3D30 /* RootNavigationLifecycle.swift in Sources */,
+				B6376F892BABE80D002E3D30 /* RootNavigationLifetime.swift in Sources */,
+				B6376F7C2BABE80D002E3D30 /* RelationPresenter.swift in Sources */,
+				B6376F8D2BABE80D002E3D30 /* TopObjectBCell.swift in Sources */,
+				B6376F6C2BABE80D002E3D30 /* OrgelAdditions.swift in Sources */,
+				B6376F6E2BABE80D002E3D30 /* TextCell.swift in Sources */,
+				B6376F822BABE80D002E3D30 /* OrgelFactory.swift in Sources */,
+				B6376F852BABE80D002E3D30 /* RootLoadingView.swift in Sources */,
+				B6376F722BABE80D002E3D30 /* ObjectLifetime.swift in Sources */,
+				B6376F8A2BABE80D002E3D30 /* RootNavigationView.swift in Sources */,
+				B6376F732BABE80D002E3D30 /* ObjectPresenter.swift in Sources */,
+				B6376F792BABE80D002E3D30 /* RelationObjectCell.swift in Sources */,
+				B6376F8B2BABE80D002E3D30 /* TopObjectACell.swift in Sources */,
+				B6376F752BABE80D002E3D30 /* ObjectView.swift in Sources */,
+				B6376F7D2BABE80D002E3D30 /* RelationView.swift in Sources */,
+				B6376F6B2BABE80D002E3D30 /* ObjectB.swift in Sources */,
+				B6376F902BABE80D002E3D30 /* TopView.swift in Sources */,
+				B6376F7B2BABE80D002E3D30 /* RelationLifetime.swift in Sources */,
+				B6376F7F2BABE80D002E3D30 /* RootPresenter.swift in Sources */,
+				B6376F6A2BABE80D002E3D30 /* ObjectA.swift in Sources */,
+				B6376F692BABE80D002E3D30 /* Localized.swift in Sources */,
+				B6376F872BABE80D002E3D30 /* RootNavgationPresenter.swift in Sources */,
+				B6376F8E2BABE80D002E3D30 /* TopObjectBPresenter.swift in Sources */,
+				B6376F702BABE80D002E3D30 /* ObjectAtrributeCell.swift in Sources */,
+				B6376F772BABE80D002E3D30 /* ObjectSelectionPresenter.swift in Sources */,
+				B6376F862BABE80D002E3D30 /* Interactor.swift in Sources */,
+				B6376F762BABE80D002E3D30 /* ObjectSelectionLifetime.swift in Sources */,
+				B6376F802BABE80D002E3D30 /* RootView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B6376F192BABE755002E3D30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		B6376F1A2BABE755002E3D30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		B6376F2B2BABE79B002E3D30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "\"Orgel_iOS_Sample/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.objective-audio.Orgel-iOS-Sample";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6376F2C2BABE79B002E3D30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"Orgel_iOS_Sample/Preview Content\"";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "jp.objective-audio.Orgel-iOS-Sample";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6376F182BABE755002E3D30 /* Build configuration list for PBXProject "Orgel_iOS_Sample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6376F192BABE755002E3D30 /* Debug */,
+				B6376F1A2BABE755002E3D30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6376F2D2BABE79B002E3D30 /* Build configuration list for PBXNativeTarget "Orgel_iOS_Sample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6376F2B2BABE79B002E3D30 /* Debug */,
+				B6376F2C2BABE79B002E3D30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B6376F922BABE86E002E3D30 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B6376F932BABE86E002E3D30 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6376F922BABE86E002E3D30 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = B6376F152BABE755002E3D30 /* Project object */;
+}
