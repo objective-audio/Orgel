@@ -1,6 +1,6 @@
 import Foundation
 
-actor LoadedIdPool {
+actor LoadingIdPool {
     private var idsByTemporary: [Entity.Name: [TemporaryId: LoadingObjectId]] = [:]
     private var idsByStable: [Entity.Name: [StableId: LoadingObjectId]] = [:]
 
@@ -33,7 +33,7 @@ actor LoadedIdPool {
     }
 }
 
-extension LoadedIdPool {
+extension LoadingIdPool {
     func set(from loadingObjectDatas: [Entity.Name: [LoadingObjectData]]) {
         for (entityName, entityObjectDatas) in loadingObjectDatas {
             for objectData in entityObjectDatas {

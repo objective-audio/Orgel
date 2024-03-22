@@ -24,8 +24,8 @@ final class FetchOptionTests: XCTestCase {
     func testAddSelect() throws {
         var option = FetchOption()
 
-        try option.addSelect(.init(table: .init("table_a"))).get()
-        try option.addSelect(.init(table: .init("table_b"))).get()
+        try option.addSelect(.init(table: .init("table_a")))
+        try option.addSelect(.init(table: .init("table_b")))
 
         XCTAssertEqual(option.selects.count, 2)
         XCTAssertEqual(option.selects[.init("table_a")]?.table.sqlStringValue, "table_a")
@@ -35,7 +35,7 @@ final class FetchOptionTests: XCTestCase {
     func testAddSelectFailed() throws {
         var option = FetchOption()
 
-        try option.addSelect(.init(table: .init("table_a"))).get()
-        XCTAssertThrowsError(try option.addSelect(.init(table: .init("table_a"))).get())
+        try option.addSelect(.init(table: .init("table_a")))
+        XCTAssertThrowsError(try option.addSelect(.init(table: .init("table_a"))))
     }
 }

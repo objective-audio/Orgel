@@ -1,12 +1,6 @@
 import Foundation
 
 public struct FetchOption: Sendable {
-    public enum AddError: Error {
-        case duplicateTable
-    }
-
-    public typealias AddResult = Result<Void, AddError>
-
     public private(set) var selects: [SQLTable: SQLSelect]
 
     public init() {
@@ -40,13 +34,15 @@ public struct FetchOption: Sendable {
         self.selects = selects
     }
 
-    public mutating func addSelect(_ select: SQLSelect) -> AddResult {
+    public mutating func addSelect(_ select: SQLSelect) throws {
+        enum AddError: Error {
+            case duplicateTable
+        }
+
         guard selects[select.table] == nil else {
-            return .failure(.duplicateTable)
+            throw AddError.duplicateTable
         }
 
         selects[select.table] = select
-
-        return .success(())
     }
 }

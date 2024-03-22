@@ -3,51 +3,27 @@ import Foundation
 // MARK: - Info
 
 extension SQLiteExecutor {
-    public enum FetchInfoError: Error {
-        case selectInfoFailed
-        case initInfoFailed(OrgelInfo.InitError)
-    }
+    public func fetchInfo() throws -> OrgelInfo {
+        enum FetchInfoError: Error {
+            case selectInfoFailed
+        }
 
-    public func fetchInfo() -> Result<OrgelInfo, FetchInfoError> {
         guard let values = selectSingle(.init(table: OrgelInfo.table)) else {
-            return .failure(.selectInfoFailed)
+            throw FetchInfoError.selectInfoFailed
         }
 
-        do {
-            let info = try OrgelInfo(values: values)
-            return .success(info)
-        } catch {
-            return .failure(.initInfoFailed(error as! OrgelInfo.InitError))
-        }
+        return try OrgelInfo(values: values)
     }
 
-    public enum UpdateVersionError: Error {
-        case updateInfoFailed(SQLiteError)
-    }
-
-    public func updateVersion(_ version: Version) -> Result<Void, UpdateVersionError> {
-        let result = executeUpdate(
+    public func updateVersion(_ version: Version) throws {
+        try executeUpdate(
             OrgelInfo.sqlForUpdateVersion,
             parameters: [.version: .text(version.stringValue)])
-
-        switch result {
-        case .success:
-            return .success(())
-        case let .failure(error):
-            return .failure(.updateInfoFailed(error))
-        }
     }
 
-    public enum CreateInfoError: Error {
-        case createInfoTableFailed
-        case insertInfoFailed
-    }
-
-    public func createInfo(version: Version) -> Result<Void, CreateInfoError> {
+    public func createInfo(version: Version) throws {
         // infoテーブルをデータベース上に作成
-        guard case .success(()) = executeUpdate(OrgelInfo.sqlForCreate) else {
-            return .failure(.createInfoTableFailed)
-        }
+        try executeUpdate(OrgelInfo.sqlForCreate)
 
         let parameters: [SQLParameter.Name: SQLValue] = [
             .version: .text(version.stringValue),
@@ -56,80 +32,42 @@ extension SQLiteExecutor {
         ]
 
         // infoデータを挿入。セーブIDは0
-        guard
-            case .success(()) = executeUpdate(
-                OrgelInfo.sqlForInsert, parameters: parameters)
-        else {
-            return .failure(.insertInfoFailed)
-        }
-
-        return .success(())
+        try executeUpdate(OrgelInfo.sqlForInsert, parameters: parameters)
     }
 
-    public enum UpdateInfoError: Error {
-        case updateFailed
-        case fetchInfoFailed
+    public func updateInfo(currentSaveId: Int64, lastSaveId: Int64) throws -> OrgelInfo {
+        try executeUpdate(
+            OrgelInfo.sqlForUpdateSaveIds,
+            parameters: [
+                .currentSaveId: .integer(currentSaveId),
+                .lastSaveId: .integer(lastSaveId),
+            ])
+
+        return try fetchInfo()
     }
 
-    public func updateInfo(currentSaveId: Int64, lastSaveId: Int64) -> Result<
-        OrgelInfo, UpdateInfoError
-    > {
-        guard
-            case .success(()) = executeUpdate(
-                OrgelInfo.sqlForUpdateSaveIds,
-                parameters: [
-                    .currentSaveId: .integer(currentSaveId),
-                    .lastSaveId: .integer(lastSaveId),
-                ])
-        else {
-            return .failure(.updateFailed)
-        }
+    public func updateCurrentSaveId(_ currentSaveId: Int64) throws -> OrgelInfo {
+        try executeUpdate(
+            OrgelInfo.sqlForUpdateCurrentSaveId,
+            parameters: [.currentSaveId: .integer(currentSaveId)])
 
-        guard case let .success(info) = fetchInfo() else {
-            return .failure(.fetchInfoFailed)
-        }
-
-        return .success(info)
-    }
-
-    public enum UpdateCurrentSaveIdError: Error {
-        case updateFailed
-        case fetchInfoFailed
-    }
-
-    public func updateCurrentSaveId(_ currentSaveId: Int64) -> Result<
-        OrgelInfo, UpdateCurrentSaveIdError
-    > {
-        guard
-            case .success(()) = executeUpdate(
-                OrgelInfo.sqlForUpdateCurrentSaveId,
-                parameters: [.currentSaveId: .integer(currentSaveId)])
-        else {
-            return .failure(.updateFailed)
-        }
-
-        guard case let .success(info) = fetchInfo() else {
-            return .failure(.fetchInfoFailed)
-        }
-
-        return .success(info)
+        return try fetchInfo()
     }
 }
 
 // MARK: - Make
 
 extension SQLiteExecutor {
-    enum MakeEntityObjectDatasError: Error {
-        case sourceObjectIdNotFound
-        case selectRelationDataFailed
-        case getStableIdFailed
-    }
-
     // 単独のエンティティでオブジェクトのアトリビュートの値を元に関連の値をデータベースから取得してLoadingObjectDataの配列を生成する
     func makeEntityObjectDatas(
         entityName: Entity.Name, modelRelations: [Relation.Name: Relation],
         entityAttributes: [[Attribute.Name: SQLValue]]
-    ) -> Result<[LoadingObjectData], Error> {
+    ) throws -> [LoadingObjectData] {
+        enum MakeEntityObjectDatasError: Error {
+            case sourceObjectIdNotFound
+            case selectRelationDataFailed
+        }
+
         var entityDatas: [LoadingObjectData] = []
         entityDatas.reserveCapacity(entityAttributes.count)
 
@@ -142,58 +80,41 @@ extension SQLiteExecutor {
             if let saveId {
                 guard let sourceObjectId = attributes[.objectId]?.integerValue
                 else {
-                    return .failure(MakeEntityObjectDatasError.sourceObjectIdNotFound)
+                    throw MakeEntityObjectDatasError.sourceObjectIdNotFound
                 }
 
                 guard
-                    case let .success(relationIds) = selectRelationIds(
+                    let relationIds = try? selectRelationIds(
                         modelRelations: modelRelations, saveId: saveId,
                         sourceObjectId: sourceObjectId)
                 else {
-                    return .failure(MakeEntityObjectDatasError.selectRelationDataFailed)
+                    throw MakeEntityObjectDatasError.selectRelationDataFailed
                 }
 
                 relations = relationIds
             }
 
-            do {
-                entityDatas.append(
-                    try LoadingObjectData(attributes: attributes, relations: relations))
-            } catch {
-                return .failure(error)
-            }
+            entityDatas.append(
+                try LoadingObjectData(attributes: attributes, relations: relations))
         }
 
-        return .success(entityDatas)
+        return entityDatas
     }
 }
 
 // MARK: - Setup
 
 extension SQLiteExecutor {
-    public enum MigrateError: Error {
-        case fetchInfoFailed
-        case updateVersionFailed
-        case alterEntityTableFailed
-        case createEntityTableFailed
-        case createRelationTableFailed
-        case createIndexFailed
-    }
-
-    public func migrateIfNeeded(model: Model) -> Result<Void, MigrateError> {
+    public func migrateIfNeeded(model: Model) throws {
         // infoからバージョンを取得。1つしかデータが無いこと前提
-        guard case let .success(info) = fetchInfo() else {
-            return .failure(.fetchInfoFailed)
-        }
+        let info: OrgelInfo = try fetchInfo()
 
         // infoを現在のバージョンで上書き
-        guard case .success(()) = updateVersion(model.version) else {
-            return .failure(.updateVersionFailed)
-        }
+        try updateVersion(model.version)
 
         // モデルのバージョンがデータベースのバージョンより低ければマイグレーションを行わない
         if model.version <= info.version {
-            return .success(())
+            return
         }
 
         // マイグレーションが必要な場合
@@ -205,130 +126,77 @@ extension SQLiteExecutor {
                         columnName: attributeName.rawValue, tableName: entityName.rawValue)
                     {
                         // テーブルにカラムが存在しなければalter tableを実行する
-                        guard
-                            case .success(()) = alterTable(
-                                entityName.table, column: attribute.column)
-                        else {
-                            return .failure(.alterEntityTableFailed)
-                        }
+                        try alterTable(entityName.table, column: attribute.column)
                     }
                 }
             } else {
                 // エンティティのテーブルが存在していない場合
                 // テーブルを作成する
-                guard case .success(()) = executeUpdate(entity.sqlForCreate) else {
-                    return .failure(.createEntityTableFailed)
-                }
+                try executeUpdate(entity.sqlForCreate)
             }
 
             // 関連のテーブルを作成する
             for (_, relation) in entity.relations {
-                guard case .success(()) = executeUpdate(relation.sqlForCreate) else {
-                    return .failure(.createRelationTableFailed)
-                }
+                try executeUpdate(relation.sqlForCreate)
             }
         }
 
         // インデックスのテーブルを作成する
         for (indexName, index) in model.indices {
             if !indexExists(indexName) {
-                guard case .success(()) = executeUpdate(index.sqlForCreate) else {
-                    return .failure(.createIndexFailed)
-                }
+                try executeUpdate(index.sqlForCreate)
             }
         }
-
-        return .success(())
     }
 
-    public enum CreateInfoAndTablesError: Error {
-        case createInfoFailed
-        case createEntityTableFailed
-        case createRelationTableFailed
-        case createIndexFailed
-    }
-
-    public func createInfoAndTables(model: Model) -> Result<Void, CreateInfoAndTablesError> {
+    public func createInfoAndTables(model: Model) throws {
         // infoテーブルをデータベース上に作成
-        guard case .success(()) = createInfo(version: model.version) else {
-            return .failure(.createInfoFailed)
-        }
+        try createInfo(version: model.version)
 
         // 全てのエンティティと関連のテーブルをデータベース上に作成する
         for (_, entity) in model.entities {
-            guard case .success(()) = executeUpdate(entity.sqlForCreate) else {
-                return .failure(.createEntityTableFailed)
-            }
+            try executeUpdate(entity.sqlForCreate)
 
             for (_, relation) in entity.relations {
-                guard case .success(()) = executeUpdate(relation.sqlForCreate) else {
-                    return .failure(.createRelationTableFailed)
-                }
+                try executeUpdate(relation.sqlForCreate)
             }
         }
 
         // 全てのインデックスをデータベース上に作成する
         for (_, index) in model.indices {
-            guard case .success(()) = executeUpdate(index.sqlForCreate) else {
-                return .failure(.createIndexFailed)
-            }
+            try executeUpdate(index.sqlForCreate)
         }
-
-        return .success(())
     }
 
-    public enum ClearDBError: Error {
-        case deleteEntityTableFailed
-        case deleteRelationTableFailed
-    }
-
-    public func clearDB(model: Model) -> Result<Void, ClearDBError> {
+    public func clearDB(model: Model) throws {
         for (entityName, entity) in model.entities {
             // エンティティのテーブルのデータを全てデータベースから削除
-            guard
-                case .success(()) = executeUpdate(
-                    .delete(table: entityName.table, where: .none))
-            else {
-                return .failure(.deleteEntityTableFailed)
-            }
+            try executeUpdate(.delete(table: entityName.table, where: .none))
 
             for (_, relation) in entity.relations {
                 // 関連のテーブルのデータを全てデータベースから削除
-                guard
-                    case .success(()) = executeUpdate(
-                        .delete(table: relation.table, where: .none))
-                else {
-                    return .failure(.deleteRelationTableFailed)
-                }
+                try executeUpdate(
+                    .delete(table: relation.table, where: .none))
             }
         }
-
-        return .success(())
     }
 }
 
 // MARK: - Editing
 
 extension SQLiteExecutor {
-    enum InsertError: Error {
-        case deleteNextToLastFailed
-        case insertAttributesFailed
-        case selectFailed
-        case getStableIdFailed
-        case makeObjectDataFailed
-    }
-
     func insert(
         model: Model, info: OrgelInfo, values: [Entity.Name: [[Attribute.Name: SQLValue]]]
     )
-        -> Result<[Entity.Name: [LoadingObjectData]], InsertError>
+        throws -> [Entity.Name: [LoadingObjectData]]
     {
+        enum InsertError: Error {
+            case selectFailed
+        }
+
         // lastSaveIdよりcurrentSaveIdが前なら、currentより後のデータは削除する
         if info.currentSaveId < info.lastSaveId {
-            guard case .success(()) = deleteNextToLast(model: model, saveId: info.currentSaveId)
-            else {
-                return .failure(.deleteNextToLastFailed)
-            }
+            try deleteNextToLast(model: model, saveId: info.currentSaveId)
         }
 
         var insertedDatas: [Entity.Name: [LoadingObjectData]] = [:]
@@ -360,13 +228,9 @@ extension SQLiteExecutor {
                     parameters[columnName.defaultParameterName] = value
                 }
 
-                guard
-                    case .success(()) = executeUpdate(
-                        .insert(table: entityName.table, columnNames: columnNames),
-                        parameters: parameters)
-                else {
-                    return .failure(.insertAttributesFailed)
-                }
+                try executeUpdate(
+                    .insert(table: entityName.table, columnNames: columnNames),
+                    parameters: parameters)
 
                 // 挿入したオブジェクトのattributeをデータベースから取得する
                 let select = SQLSelect(
@@ -376,10 +240,9 @@ extension SQLiteExecutor {
                             .objectId, .equal, .name(.objectId))),
                     parameters: [.objectId: objectIdValue])
 
-                guard case let .success(selectResult) = self.select(select),
-                    !selectResult.isEmpty
-                else {
-                    return .failure(.selectFailed)
+                let selectResult = try self.select(select)
+                guard !selectResult.isEmpty else {
+                    throw InsertError.selectFailed
                 }
 
                 // データをobjectDataにしてcompletionに返すinsertedDatasに追加
@@ -389,32 +252,23 @@ extension SQLiteExecutor {
 
                 let attributes = selectResult[0]
 
-                do {
-                    insertedDatas[entityName]!.append(
-                        try LoadingObjectData(attributes: .init(attributes), relations: [:]))
-                } catch {
-                    return .failure(.makeObjectDataFailed)
-                }
+                insertedDatas[entityName]!.append(
+                    try LoadingObjectData(attributes: .init(attributes), relations: [:]))
             }
         }
 
-        return .success(insertedDatas)
+        return insertedDatas
     }
 
-    enum FetchError: Error {
-        case fetchInfoFailed
-        case getRelationsFailed
-        case selectLastFailed
-        case makeEntityObjectDatasFailed
-    }
-
-    func loadObjectDatas(model: Model, option: FetchOption) -> Result<
-        [Entity.Name: [LoadingObjectData]], FetchError
-    > {
-        // カレントセーブIDをデータベースから取得
-        guard case let .success(info) = fetchInfo() else {
-            return .failure(.fetchInfoFailed)
+    func loadObjectDatas(model: Model, option: FetchOption) throws -> [Entity.Name:
+        [LoadingObjectData]]
+    {
+        enum FetchError: Error {
+            case getRelationsFailed
         }
+
+        // カレントセーブIDをデータベースから取得
+        let info = try fetchInfo()
 
         let currentSaveId = info.currentSaveId
 
@@ -424,58 +278,41 @@ extension SQLiteExecutor {
             let entityName = Entity.Name(table: entityTable)
 
             guard let modelRelations = model.entities[entityName]?.relations else {
-                return .failure(.getRelationsFailed)
+                throw FetchError.getRelationsFailed
             }
 
             // カレントセーブIDまでで条件にあった最後のデータをデータベースから取得する
-            guard
-                case let .success(entityAttributes) = selectLast(
-                    select, saveId: currentSaveId, includeRemoved: false)
-            else {
-                return .failure(.selectLastFailed)
-            }
+            let entityAttributes = try selectLast(
+                select, saveId: currentSaveId, includeRemoved: false)
 
             // アトリビュートのみのデータから関連のデータを加えてobject_dataを生成する
-            guard
-                case let .success(objectDatas) = makeEntityObjectDatas(
-                    entityName: entityName, modelRelations: modelRelations,
-                    entityAttributes: .init(entityAttributes))
-            else {
-                return .failure(.makeEntityObjectDatasFailed)
-            }
+            let objectDatas = try makeEntityObjectDatas(
+                entityName: entityName, modelRelations: modelRelations,
+                entityAttributes: .init(entityAttributes))
 
             loadedDatas[entityName] = objectDatas
         }
 
-        return .success(loadedDatas)
-    }
-
-    enum SaveError: Error {
-        case deleteFailed
-        case getEntityFailed
-        case getStableIdFailed
-        case maxFailed
-        case insertAttributesFailed
-        case getRelationsFailed
-        case getSavedEntityDatasFailed
-        case getPkIdFailed
-        case getModelRelationFailed
-        case convertRelationIdFailed
-        case relationIdsOverflow
-        case insertRelationsFailed
+        return loadedDatas
     }
 
     func save(
         model: Model, info: OrgelInfo, changedDatas: [Entity.Name: [SavingObjectData]]
-    )
-        -> Result<[Entity.Name: [LoadingObjectData]], SaveError>
-    {
+    ) throws -> [Entity.Name: [LoadingObjectData]] {
+        enum SaveError: Error {
+            case getEntityFailed
+            case getStableIdFailed
+            case getRelationsFailed
+            case getSavedEntityDatasFailed
+            case getPkIdFailed
+            case getModelRelationFailed
+            case convertRelationIdFailed
+            case relationIdsOverflow
+        }
+
         // lastSaveIdよりcurrentSaveIdが前なら、currentより後のデータは削除する
         if info.currentSaveId < info.lastSaveId {
-            guard case .success(()) = deleteNextToLast(model: model, saveId: info.currentSaveId)
-            else {
-                return .failure(.deleteFailed)
-            }
+            try deleteNextToLast(model: model, saveId: info.currentSaveId)
         }
 
         var savedDatas: [Entity.Name: [LoadingObjectData]] = [:]
@@ -483,7 +320,7 @@ extension SQLiteExecutor {
 
         for (entityName, changedEntityDatas) in changedDatas {
             guard let entity = model.entities[entityName] else {
-                return .failure(.getEntityFailed)
+                throw SaveError.getEntityFailed
             }
 
             let entityInsertSql = entity.sqlForInsert
@@ -517,12 +354,8 @@ extension SQLiteExecutor {
                 }
 
                 // データベースにアトリビュートのデータを挿入する
-                guard
-                    case .success(()) = executeUpdate(
-                        entityInsertSql, parameters: .init(attributes))
-                else {
-                    return .failure(.insertAttributesFailed)
-                }
+                try executeUpdate(
+                    entityInsertSql, parameters: .init(attributes))
 
                 // 挿入したデータのrowidを取得
                 let pkId = lastInsertRowId
@@ -533,7 +366,7 @@ extension SQLiteExecutor {
                     let stableId = attributes[.objectId]?
                         .integerValue
                 else {
-                    return .failure(.getStableIdFailed)
+                    throw SaveError.getStableIdFailed
                 }
 
                 entitySavedDatas.append(
@@ -551,47 +384,41 @@ extension SQLiteExecutor {
 
         for (entityName, changedEntityDatas) in changedDatas {
             guard let modelRelations = model.entities[entityName]?.relations else {
-                return .failure(.getRelationsFailed)
+                throw SaveError.getRelationsFailed
             }
 
             guard let savedEntityDatas = savedDatas[entityName] else {
-                return .failure(.getSavedEntityDatasFailed)
+                throw SaveError.getSavedEntityDatasFailed
             }
 
             for (index, changedData) in changedEntityDatas.enumerated() {
                 var savedData = savedEntityDatas[index]
 
                 guard let sourcePkId = savedData.values?.pkId else {
-                    return .failure(.getPkIdFailed)
+                    throw SaveError.getPkIdFailed
                 }
 
                 let sourceStableId = savedData.id.stable
 
                 for (relationName, relation) in changedData.relations {
                     guard let modelRelation = modelRelations[relationName] else {
-                        return .failure(.getModelRelationFailed)
+                        throw SaveError.getModelRelationFailed
                     }
 
-                    let relationIds: [StableId]
-
-                    do {
-                        relationIds = try relation.map {
-                            if let stableId = $0.stable {
-                                return stableId
-                            } else if let temporaryId = $0.temporary,
-                                let stableId = temporaryIdToStableId[temporaryId]
-                            {
-                                return stableId
-                            } else {
-                                throw SaveError.convertRelationIdFailed
-                            }
+                    let relationIds: [StableId] = try relation.map {
+                        if let stableId = $0.stable {
+                            return stableId
+                        } else if let temporaryId = $0.temporary,
+                            let stableId = temporaryIdToStableId[temporaryId]
+                        {
+                            return stableId
+                        } else {
+                            throw SaveError.convertRelationIdFailed
                         }
-                    } catch {
-                        return .failure(.convertRelationIdFailed)
                     }
 
                     if !modelRelation.many && relationIds.count > 1 {
-                        return .failure(.relationIdsOverflow)
+                        throw SaveError.relationIdsOverflow
                     }
 
                     let relationTargetObjectIds = relationIds.compactMap {
@@ -599,15 +426,11 @@ extension SQLiteExecutor {
                         return value.isNull ? nil : value
                     }
 
-                    guard
-                        case .success(()) = insertRelations(
-                            relation: modelRelation, sourcePkId: .integer(sourcePkId),
-                            sourceObjectId: .integer(sourceStableId.rawValue),
-                            relationTargetObjectIds: relationTargetObjectIds,
-                            saveId: info.nextSaveIdValue)
-                    else {
-                        return .failure(.insertRelationsFailed)
-                    }
+                    try insertRelations(
+                        relation: modelRelation, sourcePkId: .integer(sourcePkId),
+                        sourceObjectId: .integer(sourceStableId.rawValue),
+                        relationTargetObjectIds: relationTargetObjectIds,
+                        saveId: info.nextSaveIdValue)
 
                     // pkIdの取得時にvaluesが存在していることは確定している
                     savedData.updateRelations(
@@ -618,33 +441,29 @@ extension SQLiteExecutor {
             }
         }
 
-        return .success(savedDatas)
-    }
-
-    enum RemoveRelationsAtSaveError: Error {
-        case entityNotFound
-        case objectIdNotFound
-        case relationNotFound
-        case selectRelationRemovedFailed
-        case objectStableIdNotFound
-        case objectStableIdDuplicated
-        case makeEntityObjectDatasFailed
-        case inverseEntityNotFound
-        case insertAttributesFailed
-        case modelRelationNotFound
-        case insertRelationsFailed
+        return savedDatas
     }
 
     func removeRelationsAtSave(
         model: Model, info: OrgelInfo, changedDatas: [Entity.Name: [SavingObjectData]]
-    ) -> Result<Void, RemoveRelationsAtSaveError> {
+    ) throws {
+        enum RemoveRelationsAtSaveError: Error {
+            case entityNotFound
+            case objectIdNotFound
+            case relationNotFound
+            case objectStableIdNotFound
+            case objectStableIdDuplicated
+            case inverseEntityNotFound
+            case modelRelationNotFound
+        }
+
         // オブジェクトが削除された場合に逆関連があったらデータベース上で関連を外す
         let nextSaveIdValue = info.nextSaveIdValue
 
         for (entityName, changedEntityDatas) in changedDatas {
             // エンティティごとの処理
             guard let inverseRelationNames = model.entities[entityName]?.inverseRelationNames else {
-                return .failure(.entityNotFound)
+                throw RemoveRelationsAtSaveError.entityNotFound
             }
 
             guard !inverseRelationNames.isEmpty else {
@@ -661,7 +480,7 @@ extension SQLiteExecutor {
                     continue
                 }
                 guard let stableId = objectData.id.stable else {
-                    return .failure(.objectIdNotFound)
+                    throw RemoveRelationsAtSaveError.objectIdNotFound
                 }
                 targetObjectIds.insert(stableId)
             }
@@ -678,24 +497,20 @@ extension SQLiteExecutor {
                 for relationName in relationNames {
                     guard let relation = model.entities[inverseEntityName]?.relations[relationName]
                     else {
-                        return .failure(.relationNotFound)
+                        throw RemoveRelationsAtSaveError.relationNotFound
                     }
 
-                    guard
-                        case let .success(selectedValues) = selectForSave(
-                            entityName: inverseEntityName, relationTable: relation.table,
-                            targetObjectIds: targetObjectIds)
-                    else {
-                        return .failure(.selectRelationRemovedFailed)
-                    }
+                    let selectedValues = try selectForSave(
+                        entityName: inverseEntityName, relationTable: relation.table,
+                        targetObjectIds: targetObjectIds)
 
                     for attributes in selectedValues {
                         guard let stableId = attributes[.objectId]?.integerValue else {
-                            return .failure(.objectStableIdNotFound)
+                            throw RemoveRelationsAtSaveError.objectStableIdNotFound
                         }
 
                         guard entityAttributes[stableId] == nil else {
-                            return .failure(.objectStableIdDuplicated)
+                            throw RemoveRelationsAtSaveError.objectStableIdDuplicated
                         }
 
                         entityAttributes[stableId] = attributes
@@ -707,20 +522,16 @@ extension SQLiteExecutor {
                 }
 
                 guard let inverseEntity = model.entities[inverseEntityName] else {
-                    return .failure(.inverseEntityNotFound)
+                    throw RemoveRelationsAtSaveError.inverseEntityNotFound
                 }
 
                 let modelRelations = inverseEntity.relations
 
                 // アトリビュートを元に関連を取得する
 
-                guard
-                    case let .success(inverseRemovedDatas) = makeEntityObjectDatas(
-                        entityName: inverseEntityName, modelRelations: modelRelations,
-                        entityAttributes: entityAttributes.map { $0.value })
-                else {
-                    return .failure(.makeEntityObjectDatasFailed)
-                }
+                let inverseRemovedDatas = try makeEntityObjectDatas(
+                    entityName: inverseEntityName, modelRelations: modelRelations,
+                    entityAttributes: entityAttributes.map { $0.value })
 
                 guard !inverseRemovedDatas.isEmpty else {
                     continue
@@ -744,12 +555,8 @@ extension SQLiteExecutor {
                     attributes[.action] = objectData.values?.action.sqlValue
 
                     // データベースにアトリビュートのデータを挿入する
-                    guard
-                        case .success(()) = executeUpdate(
-                            entityInsertSql, parameters: .init(attributes))
-                    else {
-                        return .failure(.insertAttributesFailed)
-                    }
+                    try executeUpdate(
+                        entityInsertSql, parameters: .init(attributes))
 
                     // pk_idを取得してセットする
                     let sourcePkId = SQLValue.integer(lastInsertRowId)
@@ -757,7 +564,7 @@ extension SQLiteExecutor {
                     for (relationName, relation) in objectData.relations {
                         // データベースに関連のデータを挿入する
                         guard let modelRelation = modelRelations[relationName] else {
-                            return .failure(.modelRelationNotFound)
+                            throw RemoveRelationsAtSaveError.modelRelationNotFound
                         }
 
                         let relationTargetObjectIds = relation.filter { objectId in
@@ -765,68 +572,41 @@ extension SQLiteExecutor {
                         }.map(\.stable)
 
                         if !relationTargetObjectIds.isEmpty {
-                            guard
-                                case .success(()) = insertRelations(
-                                    relation: modelRelation, sourcePkId: sourcePkId,
-                                    sourceObjectId: sourceObjectId,
-                                    relationTargetObjectIds: .init(relationTargetObjectIds),
-                                    saveId: nextSaveIdValue)
-                            else {
-                                return .failure(.insertRelationsFailed)
-                            }
+                            try insertRelations(
+                                relation: modelRelation, sourcePkId: sourcePkId,
+                                sourceObjectId: sourceObjectId,
+                                relationTargetObjectIds: .init(relationTargetObjectIds),
+                                saveId: nextSaveIdValue)
                         }
                     }
                 }
             }
         }
-
-        return .success(())
-    }
-
-    enum DeleteNextToLastError: Error {
-        case deleteEntityFailed
-        case deleteRelationFailed
     }
 
     // 指定したsave_idより大きいsave_idのデータを、全てのエンティティに対してデータベース上から削除する
-    func deleteNextToLast(model: Model, saveId: Int64) -> Result<
-        Void, DeleteNextToLastError
-    > {
+    func deleteNextToLast(model: Model, saveId: Int64) throws {
         let deleteExprs = SQLWhere.expression(
             .compare(.saveId, .greaterThan, .name(.saveId)))
         let parameters: [SQLParameter.Name: SQLValue] = [.saveId: .integer(saveId)]
 
         for (entityName, entity) in model.entities {
-            guard
-                case .success(()) = executeUpdate(
-                    .delete(table: entityName.table, where: deleteExprs),
-                    parameters: parameters)
-            else {
-                return .failure(.deleteEntityFailed)
-            }
+            try executeUpdate(
+                .delete(table: entityName.table, where: deleteExprs),
+                parameters: parameters)
 
             for (_, relation) in entity.relations {
-                guard
-                    case .success(()) = executeUpdate(
-                        .delete(table: relation.table, where: deleteExprs),
-                        parameters: parameters)
-                else {
-                    return .failure(.deleteRelationFailed)
-                }
+                try executeUpdate(
+                    .delete(table: relation.table, where: deleteExprs),
+                    parameters: parameters)
             }
         }
-
-        return .success(())
-    }
-
-    enum InsertRelationsError: Error {
-        case insertRelationFailed
     }
 
     func insertRelations(
         relation: Relation, sourcePkId: SQLValue, sourceObjectId: SQLValue,
         relationTargetObjectIds: [SQLValue], saveId: SQLValue
-    ) -> Result<Void, InsertRelationsError> {
+    ) throws {
         let sql = relation.sqlForInsert
 
         for relationTargetObjectId in relationTargetObjectIds {
@@ -837,36 +617,18 @@ extension SQLiteExecutor {
                 .saveId: saveId,
             ]
 
-            guard case .success(()) = executeUpdate(sql, parameters: parameters) else {
-                return .failure(.insertRelationFailed)
-            }
+            try executeUpdate(sql, parameters: parameters)
         }
-
-        return .success(())
     }
 
-    enum PurgeError: Error {
-        case fetchInfoFailed
-        case deleteNextToLastFailed
-        case purgeAttributesFailed
-        case updateEntitySaveIdFailed
-        case purgeRelationsFailed
-        case updateRelationSaveIdFailed
-    }
-
-    func purgeAll(model: Model) -> Result<Void, PurgeError> {
+    func purgeAll(model: Model) throws {
         // DB情報をデータベースから取得
-        guard case let .success(info) = fetchInfo() else {
-            return .failure(.fetchInfoFailed)
-        }
+        let info = try fetchInfo()
 
         if info.currentSaveId < info.lastSaveId {
             // ラストよりカレントのセーブIDが小さければ、カレントより大きいセーブIDのデータを削除
             // つまり、アンドゥした分を削除
-            guard case .success(()) = deleteNextToLast(model: model, saveId: info.currentSaveId)
-            else {
-                return .failure(.deleteNextToLastFailed)
-            }
+            try deleteNextToLast(model: model, saveId: info.currentSaveId)
         }
 
         let saveIdColumnNames: [SQLColumn.Name] = [.saveId]
@@ -874,48 +636,32 @@ extension SQLiteExecutor {
 
         for (entityName, entity) in model.entities {
             // エンティティのデータをパージする（同じオブジェクトIDのデータは最後のものだけ生かす）
-            guard case .success(()) = purgeAttributes(entityName: entityName) else {
-                return .failure(.purgeAttributesFailed)
-            }
+            try purgeAttributes(entityName: entityName)
 
             // 残ったデータのセーブIDを全て1にする
             let updateEntitySql = SQLUpdate.update(
                 table: entityName.table, columnNames: saveIdColumnNames)
 
-            guard
-                case .success(()) = executeUpdate(
-                    updateEntitySql, parameters: oneValueParameters)
-            else {
-                return .failure(.updateEntitySaveIdFailed)
-            }
+            try executeUpdate(
+                updateEntitySql, parameters: oneValueParameters)
 
             for (_, relation) in entity.relations {
                 let relationTable = relation.table
 
                 // 関連のデータをパージする（同じソースIDのデータは最後のものだけ生かす）
-                guard
-                    case .success(()) = purgeRelations(
-                        table: relationTable, sourceEntityName: entityName)
-                else {
-                    return .failure(.purgeRelationsFailed)
-                }
+                try purgeRelations(
+                    table: relationTable, sourceEntityName: entityName)
 
                 // 残ったデータのセーブIDを全て1にする
                 let updateRelationSql = SQLUpdate.update(
                     table: relationTable, columnNames: saveIdColumnNames)
-                guard
-                    case .success(()) = executeUpdate(
-                        updateRelationSql, parameters: oneValueParameters)
-                else {
-                    return .failure(.updateRelationSaveIdFailed)
-                }
+
+                try executeUpdate(updateRelationSql, parameters: oneValueParameters)
             }
         }
-
-        return .success(())
     }
 
-    private func purgeAttributes(entityName: Entity.Name) -> UpdateResult {
+    private func purgeAttributes(entityName: Entity.Name) throws {
         let inExpr = SQLWhere.expression(
             .in(
                 field: .not(.pkId),
@@ -923,15 +669,15 @@ extension SQLiteExecutor {
                     .init(
                         table: entityName.table, field: .max(.pkId),
                         groupBy: [.objectId]))))
-        return executeUpdate(
+        return try executeUpdate(
             .delete(table: entityName.table, where: inExpr))
     }
 
-    private func purgeRelations(table: SQLTable, sourceEntityName: Entity.Name) -> UpdateResult {
+    private func purgeRelations(table: SQLTable, sourceEntityName: Entity.Name) throws {
         let select = SQLSelect(table: sourceEntityName.table, field: .column(.pkId))
         let inExpr = SQLWhere.expression(
             .in(field: .not(.sourcePkId), source: .select(select)))
-        return executeUpdate(
+        return try executeUpdate(
             .delete(table: table, where: inExpr))
     }
 }
@@ -939,8 +685,8 @@ extension SQLiteExecutor {
 // MARK: - Select
 
 extension SQLiteExecutor {
-    public func select(_ select: SQLSelect) -> Result<[[SQLColumn.Name: SQLValue]], QueryError> {
-        let queryResult = executeQuery(
+    public func select(_ select: SQLSelect) throws -> [[SQLColumn.Name: SQLValue]] {
+        try executeQuery(
             .select(select), parameters: select.parameters,
             iteration: { iterator in
                 var selectResult: [[SQLColumn.Name: SQLValue]] = []
@@ -951,42 +697,25 @@ extension SQLiteExecutor {
 
                 return selectResult
             })
-
-        switch queryResult {
-        case let .success(value):
-            return .success(value)
-        case let .failure(error):
-            return .failure(error)
-        }
     }
 
     public func selectSingle(_ select: SQLSelect) -> [SQLColumn.Name: SQLValue]? {
         var select = select
         select.limitRange = .init(location: 0, length: 1)
 
-        switch self.select(select) {
-        case let .success(values):
-            return values.first
-        case .failure:
-            return nil
-        }
+        return try? self.select(select).first
     }
 
-    enum SelectForUndoError: Error {
-        case invalidSaveId
-        case selectFailed
-        case selectEmptyFailed
-    }
-
-    func selectForUndo(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64)
-        -> Result<
-            [[Attribute.Name:
-                SQLValue]], SelectForUndoError
-        >
+    func selectForUndo(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64) throws
+        -> [[Attribute.Name: SQLValue]]
     {
+        enum SelectForUndoError: Error {
+            case invalidSaveId
+        }
+
         // リバート先のセーブIDはカレントより小さくないといけない
         guard revertSaveId < currentSaveId else {
-            return .failure(.invalidSaveId)
+            throw SelectForUndoError.invalidSaveId
         }
 
         // アンドゥで戻そうとしているデータ（リバート先からカレントまでの間）のobjectIdの集合を取得する
@@ -1013,9 +742,7 @@ extension SQLiteExecutor {
             where: .expression(.in(field: .column(.rowid), source: .select(revertedLastSelect))),
             columnOrders: [.init(name: .objectId, order: .ascending)])
 
-        guard case let .success(selectResult) = self.select(select) else {
-            return .failure(.selectFailed)
-        }
+        let selectResult = try self.select(select)
 
         // アンドゥで戻そうとしている範囲のデータの中で、insertのobjectIdの集合をobjectIdのみで取得
         // つまり、アンドゥ時点より後に挿入されたデータを空にするために取得する
@@ -1029,28 +756,22 @@ extension SQLiteExecutor {
             parameters: [.action: .insertAction],
             columnOrders: [.init(name: .objectId, order: .ascending)])
 
-        guard case let .success(emptyResult) = self.select(emptySelect) else {
-            return .failure(.selectEmptyFailed)
-        }
+        let emptyResult = try self.select(emptySelect)
 
         // キャッシュを上書きするためのデータを返す
-        return .success(.init(selectResult + emptyResult))
+        return .init(selectResult + emptyResult)
     }
 
-    enum SelectForRedoError: Error {
-        case invalidSaveId
-        case selectLastFailed(QueryError)
-    }
-
-    func selectForRedo(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64)
-        -> Result<
-            [[Attribute.Name:
-                SQLValue]], SelectForRedoError
-        >
+    func selectForRedo(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64) throws
+        -> [[Attribute.Name: SQLValue]]
     {
+        enum SelectForRedoError: Error {
+            case invalidSaveId
+        }
+
         // リバート先のセーブIDはカレントより後でないといけない
         guard currentSaveId < revertSaveId else {
-            return .failure(.invalidSaveId)
+            throw SelectForRedoError.invalidSaveId
         }
 
         // カレントからリドゥ時点の範囲で変更のあったデータを取得して返す
@@ -1059,56 +780,29 @@ extension SQLiteExecutor {
             where: .expression(.compare(.saveId, .greaterThan, .value(.integer(currentSaveId)))),
             columnOrders: [.init(name: .objectId, order: .ascending)])
 
-        switch selectLast(option, saveId: revertSaveId, includeRemoved: true) {
-        case let .success(values):
-            return .success(.init(values))
-        case let .failure(error):
-            return .failure(.selectLastFailed(error))
-        }
+        return .init(try selectLast(option, saveId: revertSaveId, includeRemoved: true))
     }
 
-    enum SelectForRevertError: Error {
-        case selectForUndoFailed(SelectForUndoError)
-        case selectForRedoFailed(SelectForRedoError)
-    }
-
-    func selectForRevert(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64)
-        -> Result<
-            [[Attribute.Name:
-                SQLValue]], SelectForRevertError
-        >
+    func selectForRevert(entityName: Entity.Name, revertSaveId: Int64, currentSaveId: Int64) throws
+        -> [[Attribute.Name: SQLValue]]
     {
         // リバート先のセーブIDによってアンドゥとリドゥに分岐する
         if revertSaveId < currentSaveId {
-            switch selectForUndo(
-                entityName: entityName, revertSaveId: revertSaveId, currentSaveId: currentSaveId)
-            {
-            case let .success(values):
-                return .success(values)
-            case let .failure(error):
-                return .failure(.selectForUndoFailed(error))
-            }
+            return try selectForUndo(
+                entityName: entityName, revertSaveId: revertSaveId, currentSaveId: currentSaveId
+            )
         } else if currentSaveId < revertSaveId {
-            switch selectForRedo(
-                entityName: entityName, revertSaveId: revertSaveId, currentSaveId: currentSaveId)
-            {
-            case let .success(value):
-                return .success(value)
-            case let .failure(error):
-                return .failure(.selectForRedoFailed(error))
-            }
+            return try selectForRedo(
+                entityName: entityName, revertSaveId: revertSaveId, currentSaveId: currentSaveId
+            )
         } else {
-            return .success([])
+            return []
         }
-    }
-
-    enum SelectForSaveError: Error {
-        case selectFailed(QueryError)
     }
 
     func selectForSave(
         entityName: Entity.Name, relationTable: SQLTable, targetObjectIds: Set<StableId>
-    ) -> Result<[[Attribute.Name: SQLValue]], SelectForSaveError> {
+    ) throws -> [[Attribute.Name: SQLValue]] {
         // 最後のオブジェクトのpk_idを取得するsql
         let lastSelect = SQLSelect(
             table: entityName.table, field: .column(.pkId),
@@ -1135,17 +829,12 @@ extension SQLiteExecutor {
             table: entityName.table, where: expressions,
             parameters: [.action: .removeAction])
 
-        switch select(option) {
-        case let .success(values):
-            return .success(.init(values))
-        case let .failure(error):
-            return .failure(.selectFailed(error))
-        }
+        return .init(try select(option))
     }
 
-    public func selectLast(_ select: SQLSelect, saveId: Int64, includeRemoved: Bool) -> Result<
-        [[SQLColumn.Name: SQLValue]], QueryError
-    > {
+    public func selectLast(_ select: SQLSelect, saveId: Int64, includeRemoved: Bool) throws
+        -> [[SQLColumn.Name: SQLValue]]
+    {
         var select = select
         select.where =
             .last(
@@ -1154,23 +843,22 @@ extension SQLiteExecutor {
                 lastSaveId: saveId,
                 includeRemoved: includeRemoved
             )
-        return self.select(select)
+        return try self.select(select)
     }
 
     public func max(table: SQLTable, columnName: SQLColumn.Name) -> SQLValue {
-        let queryResult = executeQuery(
-            .select(.init(table: table, field: .max(columnName))),
-            iteration: { iterator in
-                guard iterator.next() else { return SQLValue.null }
-                return iterator.columnValue(forIndex: 0)
-            })
-
-        switch queryResult {
-        case let .success(value):
-            return value
-        case .failure:
+        guard
+            let queryResult = try? executeQuery(
+                .select(.init(table: table, field: .max(columnName))),
+                iteration: { iterator in
+                    guard iterator.next() else { return SQLValue.null }
+                    return iterator.columnValue(forIndex: 0)
+                })
+        else {
             return .null
         }
+
+        return queryResult
     }
 }
 
@@ -1178,40 +866,31 @@ extension SQLiteExecutor {
 
 extension SQLiteExecutor {
     // 単独のオブジェクトの全ての関連の関連先のidの配列をDBから取得する
-    private enum SelectRelationIdsError: Error {
-        case selectRelationTargetIdsFailed
-    }
-
     private func selectRelationIds(
         modelRelations: [Relation.Name: Relation], saveId: Int64, sourceObjectId: Int64
-    ) -> Result<[Relation.Name: [LoadingObjectId]], SelectRelationIdsError> {
+    ) throws -> [Relation.Name: [LoadingObjectId]] {
         var relations: [Relation.Name: [LoadingObjectId]] = [:]
 
         for (relationName, modelRelation) in modelRelations {
             let relationTable = modelRelation.table
 
-            guard
-                case let .success(relationIds) = selectRelationTargetIds(
-                    relationTable: relationTable, saveId: saveId, sourceObjectId: sourceObjectId)
-            else {
-                return .failure(.selectRelationTargetIdsFailed)
-            }
+            let relationIds = try selectRelationTargetIds(
+                relationTable: relationTable, saveId: saveId, sourceObjectId: sourceObjectId)
 
             relations[relationName] = relationIds
         }
 
-        return .success(relations)
+        return relations
     }
 
     // 単独の関連の関連先のidの配列をDBから取得する
-    private enum SelectRelationTargetIdsError: Error {
-        case selectFailed
-        case targetObjectIdNotFound
-    }
-
     private func selectRelationTargetIds(
         relationTable: SQLTable, saveId: Int64, sourceObjectId: Int64
-    ) -> Result<[LoadingObjectId], SelectRelationTargetIdsError> {
+    ) throws -> [LoadingObjectId] {
+        enum SelectRelationTargetIdsError: Error {
+            case targetObjectIdNotFound
+        }
+
         let expressions = SQLWhere.and([
             .expression(.compare(.saveId, .equal, .name(.saveId))),
             .expression(
@@ -1227,21 +906,19 @@ extension SQLiteExecutor {
                 .sourceObjectId: .integer(sourceObjectId),
             ])
 
-        guard case let .success(relations) = self.select(select) else {
-            return .failure(.selectFailed)
-        }
+        let relations = try self.select(select)
 
         var relationTargetIds: [LoadingObjectId] = []
 
         for relation in relations {
             guard let stableId = relation[.targetObjectId]?.integerValue else {
-                return .failure(.targetObjectIdNotFound)
+                throw SelectRelationTargetIdsError.targetObjectIdNotFound
             }
 
             relationTargetIds.append(.stable(.init(stableId)))
         }
 
-        return .success(relationTargetIds)
+        return relationTargetIds
     }
 }
 

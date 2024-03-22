@@ -52,10 +52,6 @@ extension OrgelData {
         try cachedOrCreatedObject(entityName: type.entityName, objectId: id.rawId)?.typed(type)
     }
 
-    private enum UpdateObjectError: Error {
-        case objectNotFound
-    }
-
     /// データベースに保存せず仮にオブジェクトを生成する
     /// この時点ではobjectIdやsaveIdは振られていない
     public func createObject(entityName: Entity.Name) -> SyncedObject {

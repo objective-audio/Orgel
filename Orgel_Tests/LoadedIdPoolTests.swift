@@ -2,7 +2,7 @@ import XCTest
 
 @testable import Orgel
 
-final class LoadedIdPoolTests: XCTestCase {
+final class LoadingIdPoolTests: XCTestCase {
     override func setUpWithError() throws {
     }
 
@@ -10,14 +10,14 @@ final class LoadedIdPoolTests: XCTestCase {
     }
 
     func testEmpty() async {
-        let pool = LoadedIdPool()
+        let pool = LoadingIdPool()
 
         await AssertNilAsync(await pool.get(for: TemporaryId("1"), entityName: .init("a")))
         await AssertNilAsync(await pool.get(for: StableId(1), entityName: .init("a")))
     }
 
     func testGet() async {
-        let pool = LoadedIdPool()
+        let pool = LoadingIdPool()
 
         let stableId = StableId(1)
         let temporaryId = TemporaryId("1")
@@ -36,7 +36,7 @@ final class LoadedIdPoolTests: XCTestCase {
     }
 
     func testClear() async {
-        let pool = LoadedIdPool()
+        let pool = LoadingIdPool()
 
         let stableId = StableId(1)
         let temporaryId = TemporaryId("1")

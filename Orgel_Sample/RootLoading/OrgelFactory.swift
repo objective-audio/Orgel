@@ -2,12 +2,11 @@ import Foundation
 import Orgel
 
 final class OrgelFactory: Sendable {
-    enum MakeError: Error {
-        case documentDirectoryNotFound
-        case makeContainerFailed(Error)
-    }
-
     func makeOrgelContainer() async throws -> OrgelContainer {
+        enum MakeError: Error {
+            case documentDirectoryNotFound
+        }
+
         let model = SampleModel.make()
 
         guard
@@ -19,15 +18,6 @@ final class OrgelFactory: Sendable {
 
         let url = documentUrl.appendingPathComponent("db.sqlite")
 
-        let container: OrgelContainer
-
-        do {
-            container = try await OrgelContainer.makeWithSetup(
-                url: url, model: model)
-        } catch {
-            throw MakeError.makeContainerFailed(error)
-        }
-
-        return container
+        return try await OrgelContainer.makeWithSetup(url: url, model: model)
     }
 }

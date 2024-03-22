@@ -28,7 +28,7 @@ actor SerialTaskQueue {
 
         let result = try await handler()
 
-        try resume(id: id).get()
+        try resume(id: id)
 
         return result
     }
@@ -40,14 +40,11 @@ extension SerialTaskQueue {
         case idNotFound
     }
 
-    typealias ResumeResult = Result<Void, ResumeError>
-
-    func resume(id: TaskId) -> ResumeResult {
+    func resume(id: TaskId) throws {
         if executingTask == id {
             executingTask = nil
-            return .success(())
         } else {
-            return .failure(.idNotFound)
+            throw ResumeError.idNotFound
         }
     }
 

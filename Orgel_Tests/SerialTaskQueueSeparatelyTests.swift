@@ -28,23 +28,23 @@ final class DatabaseQueueSeparatelyTests: XCTestCase {
         await AssertThrowsErrorAsync(try await queue.executeTaskIfNeeded(id: id2).get())
 
         // 実行中でなければ完了できない
-        await AssertThrowsErrorAsync(try await queue.resume(id: id2).get())
+        await AssertThrowsErrorAsync(try await queue.resume(id: id2))
 
         // 実行中であれば完了できる
-        try await queue.resume(id: id1).get()
+        try await queue.resume(id: id1)
 
         // 重複して完了できない
-        await AssertThrowsErrorAsync(try await queue.resume(id: id1).get())
+        await AssertThrowsErrorAsync(try await queue.resume(id: id1))
 
         // 先頭のアクションが完了したので次のアクションが実行できる
         try await queue.executeTaskIfNeeded(id: id2).get()
 
         // 実行中であれば完了できる。queueが空になる
-        try await queue.resume(id: id2).get()
+        try await queue.resume(id: id2)
 
         // 空なので新たなアクションを追加して実行できる
         let id3 = await queue.addTask()
         try await queue.executeTaskIfNeeded(id: id3).get()
-        try await queue.resume(id: id3).get()
+        try await queue.resume(id: id3)
     }
 }

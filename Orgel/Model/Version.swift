@@ -1,27 +1,30 @@
 import Foundation
 
 public struct Version: Sendable {
-    public enum InitError: Error {
-        case invalidFormat
-        case empty
-    }
-
     public let numbers: [Int]
 
     public init(_ numbers: [Int]) throws {
+        enum InitError: Error {
+            case emptyNumbers
+        }
+
         self.numbers = numbers
 
         if numbers.isEmpty {
-            throw InitError.empty
+            throw InitError.emptyNumbers
         }
     }
 
     public init(_ string: String) throws {
+        enum InitError: Error {
+            case invalidStringFormat
+        }
+
         let numbers = try string.components(separatedBy: ".").map {
             if let value = Int($0), value >= 0 {
                 return value
             } else {
-                throw InitError.invalidFormat
+                throw InitError.invalidStringFormat
             }
         }
 

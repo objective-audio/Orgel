@@ -57,11 +57,9 @@ final class SQLiteExecutorTests: XCTestCase {
         try await executor.executeUpdate(
             .raw("create table test_table_1 (column_a, column_b);")
         )
-        .get()
         try await executor.executeUpdate(
             .raw("create table test_table_2 (column_c, column_d);")
         )
-        .get()
 
         await AssertTrueAsync(await executor.tableExists(.init("test_table_1")))
         await AssertTrueAsync(
@@ -87,7 +85,6 @@ final class SQLiteExecutorTests: XCTestCase {
                 .init(name: .init("column_b"), valueType: .text),
             ]
         )
-        .get()
 
         let insertParams: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a"), .init("column_b"): .text("value_b"),
@@ -95,7 +92,7 @@ final class SQLiteExecutorTests: XCTestCase {
         try await executor.executeUpdate(
             .raw("insert into test_table(column_a, column_b) values(:column_a, :column_b)"),
             parameters: insertParams
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -107,7 +104,7 @@ final class SQLiteExecutorTests: XCTestCase {
 
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         let updateParams: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a_2"), .init("column_b"): .text("value_b_2"),
@@ -115,7 +112,7 @@ final class SQLiteExecutorTests: XCTestCase {
         try await executor.executeUpdate(
             .raw("update test_table set column_a = :column_a, column_b = :column_b"),
             parameters: updateParams
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -127,7 +124,7 @@ final class SQLiteExecutorTests: XCTestCase {
 
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -137,15 +134,15 @@ final class SQLiteExecutorTests: XCTestCase {
 
         try await executor.createTable(
             .init("test_table"), columns: [.init(name: .init("column_a"), valueType: .integer)]
-        ).get()
+        )
         try await executor.executeUpdate(
             .raw("insert into test_table(column_a) values(:column_a)"),
             parameters: [.init("column_a"): .text("value_a")]
-        ).get()
+        )
         try await executor.executeUpdate(
             .raw("insert into test_table(column_a) values(:column_a)"),
             parameters: [.init("column_a"): .text("hoge_a")]
-        ).get()
+        )
 
         let columnAValue = try await executor.executeQuery(
             .raw("select * from test_table where column_a = :column_a"),
@@ -159,7 +156,7 @@ final class SQLiteExecutorTests: XCTestCase {
 
                 return columnAValue
             }
-        ).get()
+        )
 
         XCTAssertEqual(columnAValue, .text("value_a"))
 
@@ -173,7 +170,7 @@ final class SQLiteExecutorTests: XCTestCase {
         await AssertEqualAsync(await executor.lastErrorCode, SQLITE_OK)
         await AssertEqualAsync(await executor.lastErrorMessage, "not an error")
 
-        await AssertThrowsErrorAsync(try await executor.executeUpdate(.raw("hoge")).get())
+        await AssertThrowsErrorAsync(try await executor.executeUpdate(.raw("hoge")))
 
         await AssertTrueAsync(await executor.hadError)
         await AssertNotEqualAsync(await executor.lastErrorCode, SQLITE_OK)
@@ -185,27 +182,24 @@ final class SQLiteExecutorTests: XCTestCase {
     func testForeignKey() async throws {
         let executor = await TestUtils.makeAndOpenExecutor(uuid: uuid)
 
-        try await executor.beginTransaction().get()
+        try await executor.beginTransaction()
 
         try await executor.executeUpdate(
             .raw("create table idmaster (id integer primary key autoincrement, name text);")
-        ).get()
+        )
         try await executor.executeUpdate(.raw("insert into idmaster values (null, 'A');"))
-            .get()
         try await executor.executeUpdate(
             .raw(
                 "create table address (id integer, address text, foreign key(id) references idmaster(id) on delete cascade);"
             )
-        ).get()
+        )
         try await executor.executeUpdate(.raw("insert into address values (1, 'addressA');"))
-            .get()
         await AssertThrowsErrorAsync(
             try await executor.executeUpdate(
                 .raw("insert into address values (2, 'addressB');")
-            )
-            .get())
+            ))
 
-        try await executor.commit().get()
+        try await executor.commit()
 
         try await executor.executeQuery(
             .raw("select * from idmaster;"),
@@ -213,7 +207,7 @@ final class SQLiteExecutorTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from address;"),
@@ -221,23 +215,23 @@ final class SQLiteExecutorTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
-        try await executor.executeUpdate(.raw("delete from idmaster")).get()
+        try await executor.executeUpdate(.raw("delete from idmaster"))
 
         try await executor.executeQuery(
             .raw("select * from idmaster;"),
             iteration: { iterator in
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from address;"),
             iteration: { iterator in
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }

@@ -3,8 +3,8 @@ import Foundation
 public struct ReadOnlyObject: Sendable {
     public let entity: Entity
     private let data: LoadingObjectData
-    var loadedId: LoadingObjectId { data.id }
-    public var id: ObjectId { loadedId.objectId }
+    var loadingId: LoadingObjectId { data.id }
+    public var id: ObjectId { loadingId.objectId }
 
     init(entity: Entity, data: LoadingObjectData) {
         self.data = data

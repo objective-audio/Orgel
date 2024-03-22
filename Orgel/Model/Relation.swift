@@ -9,12 +9,6 @@ public struct Relation: Sendable {
         }
     }
 
-    public enum InitError: Error {
-        case nameIsEmpty
-        case sourceIsEmpty
-        case targetIsEmpty
-    }
-
     public let name: Name
     public let source: Entity.Name
     public let target: Entity.Name
@@ -23,6 +17,12 @@ public struct Relation: Sendable {
     public var table: SQLTable { .init("rel_\(source.rawValue)_\(name.rawValue)") }
 
     public init(name: Name, source: Entity.Name, target: Entity.Name, many: Bool = false) throws {
+        enum InitError: Error {
+            case nameIsEmpty
+            case sourceIsEmpty
+            case targetIsEmpty
+        }
+
         self.name = name
         self.source = source
         self.target = target

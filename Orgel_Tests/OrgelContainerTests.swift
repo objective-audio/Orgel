@@ -52,25 +52,25 @@ final class DatabaseContainerTests: XCTestCase {
                 return
             }
 
-            try await executor.beginTransaction().get()
+            try await executor.beginTransaction()
 
             try await executor.executeUpdate(
                 .insert(
                     table: .objectA, columnNames: [.age, .name, .weight]),
                 parameters: [.age: .integer(2), .name: .text("xyz"), .weight: .real(451.2)]
-            ).get()
+            )
 
             try await executor.executeUpdate(
                 .insert(table: .objectB, columnNames: [.fullname]),
                 parameters: [.fullname: .text("qwerty")]
-            ).get()
+            )
 
             let optionA = SQLSelect(table: .objectA, field: .column(.objectId))
-            let selectedAValues = try await executor.select(optionA).get()
+            let selectedAValues = try await executor.select(optionA)
             let sourceObjectId = try XCTUnwrap(selectedAValues[0][.objectId])
 
             let optionB = SQLSelect(table: .objectB, field: .column(.objectId))
-            let selectedBValues = try await executor.select(optionB).get()
+            let selectedBValues = try await executor.select(optionB)
             let targetObjectId = try XCTUnwrap(selectedBValues[0][.objectId])
 
             try await executor.executeUpdate(
@@ -81,7 +81,7 @@ final class DatabaseContainerTests: XCTestCase {
                     .sourceObjectId: sourceObjectId,
                     .targetObjectId: targetObjectId,
                 ]
-            ).get()
+            )
 
             let saveIdValue = SQLValue.integer(100)
 
@@ -92,9 +92,9 @@ final class DatabaseContainerTests: XCTestCase {
                     .currentSaveId: saveIdValue,
                     .lastSaveId: saveIdValue,
                 ]
-            ).get()
+            )
 
-            try await executor.commit().get()
+            try await executor.commit()
 
             await executor.close()
         }
@@ -113,7 +113,6 @@ final class DatabaseContainerTests: XCTestCase {
             XCTAssertTrue(infoTableExists)
 
             let infoValues = try await executor.select(.init(table: OrgelInfo.table))
-                .get()
             XCTAssertEqual(infoValues.count, 1)
             XCTAssertEqual(infoValues[0][.version], .text("0.0.2"))
             XCTAssertEqual(infoValues[0][.currentSaveId], .integer(100))
@@ -123,7 +122,6 @@ final class DatabaseContainerTests: XCTestCase {
             XCTAssertTrue(objectAExists)
 
             let objectAValues = try await executor.select(.init(table: .objectA))
-                .get()
             XCTAssertEqual(objectAValues.count, 1)
 
             let objectA = objectAValues[0]
@@ -135,7 +133,6 @@ final class DatabaseContainerTests: XCTestCase {
             XCTAssertTrue(objectBExists)
 
             let objectBValues = try await executor.select(.init(table: .objectB))
-                .get()
             XCTAssertEqual(objectBValues.count, 1)
 
             let objectB = objectBValues[0]
@@ -145,7 +142,6 @@ final class DatabaseContainerTests: XCTestCase {
             XCTAssertTrue(objectCExists)
 
             let objectCValues = try await executor.select(.init(table: .objectC))
-                .get()
             XCTAssertEqual(objectCValues.count, 0)
 
             let relationExists = await executor.tableExists(.init("rel_ObjectA_children"))
@@ -153,7 +149,7 @@ final class DatabaseContainerTests: XCTestCase {
 
             let relationValues = try await executor.select(
                 .init(table: .init("rel_ObjectA_children"))
-            ).get()
+            )
             XCTAssertEqual(relationValues.count, 1)
 
             let sourceObjectId = try XCTUnwrap(objectA[.objectId])
@@ -614,7 +610,7 @@ final class DatabaseContainerTests: XCTestCase {
 
             let selectedValues = try await executor.select(
                 .init(table: .objectA)
-            ).get()
+            )
 
             await executor.close()
 
@@ -886,7 +882,7 @@ final class DatabaseContainerTests: XCTestCase {
         XCTAssertEqual(fetchedAObjects.order.count, 1)
         XCTAssertEqual(fetchedAObjects.objects.count, 1)
         let fetchedAObject = try XCTUnwrap(fetchedAObjects.object(at: 0))
-        XCTAssertEqual(fetchedAObject.loadedId.stable.rawValue, 1)
+        XCTAssertEqual(fetchedAObject.loadingId.stable.rawValue, 1)
         XCTAssertEqual(fetchedAObject.attributeValue(forName: .name), .text("value_0"))
 
         XCTAssertEqual(fetchedAObject.relationIds(forName: .children).count, 1)
@@ -928,11 +924,11 @@ final class DatabaseContainerTests: XCTestCase {
         // 直にInsertした場合のIdはStableのみ
         XCTAssertEqual(fetchedAObjects.order.count, 2)
         XCTAssertEqual(fetchedAObjects.objects.count, 2)
-        XCTAssertEqual(fetchedAObjects.objects[.stable(.init(2))]?.loadedId.stable.rawValue, 2)
+        XCTAssertEqual(fetchedAObjects.objects[.stable(.init(2))]?.loadingId.stable.rawValue, 2)
         XCTAssertEqual(
             fetchedAObjects.objects[.stable(.init(2))]?.attributeValue(forName: .name),
             .text("value_2"))
-        XCTAssertEqual(fetchedAObjects.objects[.stable(.init(3))]?.loadedId.stable.rawValue, 3)
+        XCTAssertEqual(fetchedAObjects.objects[.stable(.init(3))]?.loadingId.stable.rawValue, 3)
         XCTAssertEqual(
             fetchedAObjects.objects[.stable(.init(3))]?.attributeValue(forName: .name),
             .text("value_3"))
@@ -1091,7 +1087,7 @@ final class DatabaseContainerTests: XCTestCase {
 
             let selectedValues = try await executor.select(
                 .init(table: .objectA)
-            ).get()
+            )
 
             await executor.close()
 
@@ -1115,7 +1111,7 @@ final class DatabaseContainerTests: XCTestCase {
             let relationTable = try XCTUnwrap(model.entities[.objectA]?.relations[.children]?.table)
             let selectedValues = try await executor.select(
                 .init(table: relationTable)
-            ).get()
+            )
 
             await executor.close()
 
@@ -1217,7 +1213,7 @@ final class DatabaseContainerTests: XCTestCase {
 
             let selectedValues = try await executor.select(
                 .init(table: .objectA)
-            ).get()
+            )
 
             XCTAssertEqual(selectedValues.count, 4)
 
@@ -1406,7 +1402,7 @@ final class DatabaseContainerTests: XCTestCase {
             do {
                 let selectedValues = try await executor.select(
                     .init(table: .objectA, columnOrders: [.init(name: .saveId, order: .ascending)])
-                ).get()
+                )
 
                 XCTAssertEqual(selectedValues.count, 2)
                 XCTAssertEqual(selectedValues[0][.saveId], .integer(1))
@@ -1651,7 +1647,6 @@ final class DatabaseContainerTests: XCTestCase {
             let relationTable = try XCTUnwrap(model.entities[.objectA]?.relations[.children]?.table)
 
             let aObjects = try await executor.select(.init(table: .objectA))
-                .get()
             let objectA = aObjects[0]
 
             XCTAssertEqual(aObjects.count, 1)
@@ -1659,7 +1654,6 @@ final class DatabaseContainerTests: XCTestCase {
             XCTAssertEqual(objectA[.saveId], .integer(1))
 
             let bObjects = try await executor.select(.init(table: .objectB))
-                .get()
 
             XCTAssertEqual(bObjects.count, 2)
 
@@ -1677,7 +1671,7 @@ final class DatabaseContainerTests: XCTestCase {
 
             let relationObjects = try await executor.select(
                 .init(table: relationTable)
-            ).get()
+            )
 
             XCTAssertEqual(relationObjects.count, 2)
 

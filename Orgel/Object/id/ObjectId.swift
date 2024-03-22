@@ -13,8 +13,8 @@ public enum ObjectId: Sendable, Codable {
         }
     }
 
-    init(_ loadedId: LoadingObjectId) {
-        switch loadedId {
+    init(_ loadingId: LoadingObjectId) {
+        switch loadingId {
         case let .stable(stableId):
             self = .stable(stableId)
         case let .both(stableId, temporaryId):

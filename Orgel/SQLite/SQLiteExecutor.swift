@@ -2,18 +2,6 @@ import Foundation
 import SQLite3
 
 public actor SQLiteExecutor {
-    public typealias UpdateResult = Result<Void, SQLiteError>
-
-    public enum QueryError: Error {
-        case sqlite(SQLiteError)
-        case iteration(Error)
-    }
-
-    public enum IterationError: Error {
-        case contentNotFound
-        case invalidContent
-    }
-
     public static var libVersion: String { String(cString: sqlite3_libversion()) }
     public static var isThreadSafe: Bool { sqlite3_threadsafe() != 0 }
 
@@ -43,12 +31,10 @@ public actor SQLiteExecutor {
             return false
         }
 
-        let updateResult = executeUpdate(.raw("pragma foreign_keys = ON;"))
-
-        switch updateResult {
-        case .success:
+        do {
+            try executeUpdate(.raw("pragma foreign_keys = ON;"))
             return true
-        case .failure:
+        } catch {
             return false
         }
     }
@@ -89,7 +75,6 @@ public actor SQLiteExecutor {
             ) { _ in
                 ()
             }
-            .get()
             return true
         } catch {
             return false
@@ -97,18 +82,23 @@ public actor SQLiteExecutor {
     }
 
     public var integrityCheck: Bool {
+        enum IntegrityCheckError: Error {
+            case columnNotFound
+            case notOK
+        }
+
         do {
             try executeQuery(.raw("pragma integrity_check;")) { iterator in
                 guard iterator.next(),
                     case let .text(text) = iterator.columnValue(forName: "integrity_check")
                 else {
-                    throw IterationError.contentNotFound
+                    throw IntegrityCheckError.columnNotFound
                 }
 
                 guard text.lowercased() == "ok" else {
-                    throw IterationError.invalidContent
+                    throw IntegrityCheckError.notOK
                 }
-            }.get()
+            }
             return true
         } catch {
             return false
@@ -129,9 +119,11 @@ public actor SQLiteExecutor {
 
 extension SQLiteExecutor {
     public func executeUpdate(_ sql: SQLUpdate, parameters: [SQLParameter.Name: SQLValue] = [:])
-        -> UpdateResult
+        throws
     {
-        guard let sqliteHandle else { return .failure(.init(kind: .closed)) }
+        guard let sqliteHandle else {
+            throw SQLiteError(kind: .closed)
+        }
 
         var statementHandle: OpaquePointer?
 
@@ -140,14 +132,14 @@ extension SQLiteExecutor {
                 sqliteHandle, sql.sqlStringValue.cString(using: .utf8), -1, &statementHandle, nil))
 
         guard let statementHandle else {
-            return .failure(
-                .init(kind: .prepareFailed, result: prepareResult, message: lastErrorMessage))
+            throw SQLiteError(
+                kind: .prepareFailed, result: prepareResult, message: lastErrorMessage)
         }
 
         guard prepareResult.isSuccess else {
             sqlite3_finalize(statementHandle)
-            return .failure(
-                .init(kind: .prepareFailed, result: prepareResult, message: lastErrorMessage))
+            throw SQLiteError(
+                kind: .prepareFailed, result: prepareResult, message: lastErrorMessage)
         }
 
         let bindedCount: Int
@@ -170,16 +162,15 @@ extension SQLiteExecutor {
 
         guard bindedCount == queryCount else {
             sqlite3_finalize(statementHandle)
-            return .failure(.init(kind: .invalidQueryCount))
+            throw SQLiteError(kind: .invalidQueryCount)
         }
 
         let stepResult = SQLiteResult(rawValue: sqlite3_step(statementHandle))
 
         guard stepResult.rawValue != SQLITE_ROW else {
-            return .failure(
-                .init(
-                    kind: .stepFailed, result: stepResult,
-                    message: "executeUpdate is being called with a query string '\(sql)'."))
+            throw SQLiteError(
+                kind: .stepFailed, result: stepResult,
+                message: "executeUpdate is being called with a query string '\(sql)'.")
         }
 
         let stepErrorMessage = lastErrorMessage
@@ -187,42 +178,32 @@ extension SQLiteExecutor {
         let finalizeResult = SQLiteResult(rawValue: sqlite3_finalize(statementHandle))
 
         guard finalizeResult.isSuccess else {
-            return .failure(
-                .init(kind: .finalizeFailed, result: stepResult, message: lastErrorMessage))
+            throw SQLiteError(kind: .finalizeFailed, result: stepResult, message: lastErrorMessage)
         }
 
         if stepResult.isSuccess {
-            return .success(())
+            return
         } else {
-            return .failure(.init(kind: .stepFailed, result: stepResult, message: stepErrorMessage))
+            throw SQLiteError(kind: .stepFailed, result: stepResult, message: stepErrorMessage)
         }
     }
 
     public func executeQuery<Success>(
         _ sql: SQLQuery, parameters: [SQLParameter.Name: SQLValue] = [:],
         iteration: @Sendable (SQLiteIterator) throws -> Success
-    ) -> Result<Success, QueryError> {
-        switch executeQuery(sql, parameters: parameters) {
-        case let .success(iterator):
-            defer { iterator.close() }
+    ) throws -> Success {
+        let iterator = try executeQuery(sql, parameters: parameters)
+        defer { iterator.close() }
 
-            do {
-                let result = try iteration(iterator)
-                return .success(result)
-            } catch {
-                return .failure(.iteration(error))
-            }
-        case let .failure(error):
-            return .failure(.sqlite(error))
-        }
+        return try iteration(iterator)
     }
 
-    private func executeQuery(_ sql: SQLQuery, parameters: [SQLParameter.Name: SQLValue])
-        -> Result<
-            SQLiteIterator, SQLiteError
-        >
+    private func executeQuery(_ sql: SQLQuery, parameters: [SQLParameter.Name: SQLValue]) throws
+        -> SQLiteIterator
     {
-        guard let sqliteHandle else { return .failure(.init(kind: .closed)) }
+        guard let sqliteHandle else {
+            throw SQLiteError(kind: .closed)
+        }
 
         var statementHandle: OpaquePointer?
 
@@ -232,8 +213,7 @@ extension SQLiteExecutor {
 
         guard resultCode.isSuccess, let statementHandle else {
             sqlite3_finalize(statementHandle)
-            return .failure(
-                .init(kind: .prepareFailed, result: resultCode, message: lastErrorMessage))
+            throw SQLiteError(kind: .prepareFailed, result: resultCode, message: lastErrorMessage)
         }
 
         let bindedCount: Int
@@ -256,11 +236,10 @@ extension SQLiteExecutor {
 
         guard bindedCount == queryCount else {
             sqlite3_finalize(statementHandle)
-            return .failure(
-                .init(kind: .invalidQueryCount))
+            throw SQLiteError(kind: .invalidQueryCount)
         }
 
-        return .success(.init(statementHandle: statementHandle, sqliteHandle: sqliteHandle))
+        return .init(statementHandle: statementHandle, sqliteHandle: sqliteHandle)
     }
 
     private func bind(value: SQLValue, columnIdx: Int32, stmt: OpaquePointer) {
@@ -282,31 +261,31 @@ extension SQLiteExecutor {
 }
 
 extension SQLiteExecutor {
-    public func createTable(_ table: SQLTable, columns: [SQLColumn]) -> UpdateResult {
-        executeUpdate(.createTable(table, columns: columns))
+    public func createTable(_ table: SQLTable, columns: [SQLColumn]) throws {
+        try executeUpdate(.createTable(table, columns: columns))
     }
 
-    public func alterTable(_ table: SQLTable, column: SQLColumn) -> UpdateResult {
-        executeUpdate(.alterTable(table, column: column))
+    public func alterTable(_ table: SQLTable, column: SQLColumn) throws {
+        try executeUpdate(.alterTable(table, column: column))
     }
 
-    public func dropTable(_ table: SQLTable) -> UpdateResult {
-        executeUpdate(.dropTable(table))
+    public func dropTable(_ table: SQLTable) throws {
+        try executeUpdate(.dropTable(table))
     }
 
     public func createIndex(_ index: SQLIndex, table: SQLTable, columnNames: [SQLColumn.Name])
-        -> UpdateResult
+        throws
     {
-        executeUpdate(.createIndex(index, table: table, columnNames: columnNames))
+        try executeUpdate(.createIndex(index, table: table, columnNames: columnNames))
     }
 
-    public func dropIndex(_ index: SQLIndex) -> UpdateResult {
-        executeUpdate(.dropIndex(index))
+    public func dropIndex(_ index: SQLIndex) throws {
+        try executeUpdate(.dropIndex(index))
     }
 
     public func tableExists(_ table: SQLTable) -> Bool {
         do {
-            let _ = try tableSchema(table).get()
+            let _ = try tableSchema(table)
             return true
         } catch {
             return false
@@ -315,7 +294,7 @@ extension SQLiteExecutor {
 
     public func indexExists(_ index: SQLIndex) -> Bool {
         do {
-            let _ = try indexSchema(index).get()
+            let _ = try indexSchema(index)
             return true
         } catch {
             return false
@@ -326,7 +305,7 @@ extension SQLiteExecutor {
         let lowerTableName = tableName.lowercased()
         let lowerColumnName = columnName.lowercased()
 
-        guard let schema = try? tableSchema(.init(lowerTableName)).get() else {
+        guard let schema = try? tableSchema(.init(lowerTableName)) else {
             return false
         }
 
@@ -340,38 +319,46 @@ extension SQLiteExecutor {
         return false
     }
 
-    public func schema() -> Result<[[SQLColumn.Name: SQLValue]], QueryError> {
-        executeQuery(
+    public func schema() throws -> [[SQLColumn.Name: SQLValue]] {
+        return try executeQuery(
             .raw(
                 "select type, name, tbl_name, rootpage, sql from (select * from sqlite_master union all select * from sqlite_temp_master) where type != 'meta' and name not like 'sqlite_%' order by tbl_name, type desc, name"
             )
         ) { iterator in
+            enum SchemeError: Error {
+                case valuesNotFound
+            }
+
             var result: [[SQLColumn.Name: SQLValue]] = []
             while iterator.next() {
                 result.append(iterator.values)
             }
             guard !result.isEmpty else {
-                throw IterationError.contentNotFound
+                throw SchemeError.valuesNotFound
             }
             return result
         }
     }
 
-    public func tableSchema(_ table: SQLTable) -> Result<[[SQLColumn.Name: SQLValue]], QueryError> {
-        executeQuery(.raw("PRAGMA table_info('" + table.sqlStringValue + "')")) { iterator in
+    public func tableSchema(_ table: SQLTable) throws -> [[SQLColumn.Name: SQLValue]] {
+        try executeQuery(.raw("PRAGMA table_info('" + table.sqlStringValue + "')")) { iterator in
+            enum TableSchemaError: Error {
+                case valuesNotFound
+            }
+
             var result: [[SQLColumn.Name: SQLValue]] = []
             while iterator.next() {
                 result.append(iterator.values)
             }
             guard !result.isEmpty else {
-                throw IterationError.contentNotFound
+                throw TableSchemaError.valuesNotFound
             }
             return result
         }
     }
 
-    public func indexSchema(_ index: SQLIndex) -> Result<[SQLColumn.Name: SQLValue], QueryError> {
-        executeQuery(
+    public func indexSchema(_ index: SQLIndex) throws -> [SQLColumn.Name: SQLValue] {
+        try executeQuery(
             .select(
                 .init(
                     table: .sqliteMaster, field: .wildcard,
@@ -380,20 +367,26 @@ extension SQLiteExecutor {
                         .expression(.raw("name = '" + index.sqlStringValue + "'")),
                     ])))
         ) { iterator in
-            guard iterator.next() else { throw IterationError.contentNotFound }
+            enum IndexSchemaError: Error {
+                case valuesNotFound
+            }
+
+            guard iterator.next() else {
+                throw IndexSchemaError.valuesNotFound
+            }
             return iterator.values
         }
     }
 
-    public func beginTransaction() -> UpdateResult {
-        executeUpdate(.beginTransation)
+    public func beginTransaction() throws {
+        try executeUpdate(.beginTransation)
     }
 
-    public func commit() -> UpdateResult {
-        executeUpdate(.commitTransaction)
+    public func commit() throws {
+        try executeUpdate(.commitTransaction)
     }
 
-    public func rollback() -> UpdateResult {
-        executeUpdate(.rollbackTransaction)
+    public func rollback() throws {
+        try executeUpdate(.rollbackTransaction)
     }
 }

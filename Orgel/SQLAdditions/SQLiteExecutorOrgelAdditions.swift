@@ -2,42 +2,25 @@ import Foundation
 
 extension SQLiteExecutor {
     func setup(model: Model) throws -> OrgelInfo {
-        enum SetupError: Error {
-            case beginTransactionFailed
-            case migrationFailed
-            case createInfoAndTablesFailed
-            case commitFailed
-            case fetchInfoFailed
-        }
+        try execute {
+            try beginTransaction()
 
-        return try execute {
-            guard case .success(()) = beginTransaction() else {
-                throw SetupError.beginTransactionFailed
-            }
-
-            if tableExists(OrgelInfo.table) {
-                // infoのテーブルが存在している場合は、必要があればマイグレーションする
-                guard case .success(()) = migrateIfNeeded(model: model) else {
-                    let _ = rollback()
-                    throw SetupError.migrationFailed
+            do {
+                if tableExists(OrgelInfo.table) {
+                    // infoのテーブルが存在している場合は、必要があればマイグレーションする
+                    try migrateIfNeeded(model: model)
+                } else {
+                    // infoのテーブルが存在していない場合は、新規にテーブルを作成する
+                    try createInfoAndTables(model: model)
                 }
-            } else {
-                // infoのテーブルが存在していない場合は、新規にテーブルを作成する
-                guard case .success(()) = createInfoAndTables(model: model) else {
-                    let _ = rollback()
-                    throw SetupError.createInfoAndTablesFailed
-                }
+            } catch {
+                _ = try? rollback()
+                throw error
             }
 
-            guard case .success(()) = commit() else {
-                throw SetupError.commitFailed
-            }
+            try commit()
 
-            guard case let .success(info) = fetchInfo() else {
-                throw SetupError.fetchInfoFailed
-            }
-
-            return info
+            return try fetchInfo()
         }
     }
 
@@ -45,50 +28,31 @@ extension SQLiteExecutor {
         insertedDatas: [Entity.Name: [LoadingObjectData]], info: OrgelInfo
     )
 
-    func insertObjects(model: Model, values: [Entity.Name: [[Attribute.Name: SQLValue]]])
-        throws
+    func insertObjects(model: Model, values: [Entity.Name: [[Attribute.Name: SQLValue]]]) throws
         -> InsertObjectsResult
     {
-        enum InsertObjectsError: Error {
-            case beginTransactionFailed
-            case fetchInfoFailed
-            case insertFailed
-            case updateInfoFailed
-            case commitFailed
-        }
-
         return try execute {
-            guard case .success(()) = beginTransaction() else {
-                throw InsertObjectsError.beginTransactionFailed
+            try beginTransaction()
+
+            let insertedDatas: [Entity.Name: [LoadingObjectData]]
+            let updatedInfo: OrgelInfo
+
+            do {
+                let info = try fetchInfo()
+
+                // DB上に新規にデータを挿入する
+                insertedDatas = try insert(model: model, info: info, values: values)
+
+                // DB情報を更新する
+                let nextSaveId = info.nextSaveId
+
+                updatedInfo = try updateInfo(currentSaveId: nextSaveId, lastSaveId: nextSaveId)
+            } catch {
+                _ = try? rollback()
+                throw error
             }
 
-            guard case let .success(info) = fetchInfo() else {
-                let _ = rollback()
-                throw InsertObjectsError.fetchInfoFailed
-            }
-
-            // DB上に新規にデータを挿入する
-            guard
-                case let .success(insertedDatas) = insert(model: model, info: info, values: values)
-            else {
-                let _ = rollback()
-                throw InsertObjectsError.insertFailed
-            }
-
-            // DB情報を更新する
-            let nextSaveId = info.nextSaveId
-
-            guard
-                case let .success(updatedInfo) = updateInfo(
-                    currentSaveId: nextSaveId, lastSaveId: nextSaveId)
-            else {
-                let _ = rollback()
-                throw InsertObjectsError.updateInfoFailed
-            }
-
-            guard case .success(()) = commit() else {
-                throw InsertObjectsError.commitFailed
-            }
+            try commit()
 
             return (insertedDatas, updatedInfo)
         }
@@ -98,61 +62,38 @@ extension SQLiteExecutor {
     func fetchObjectDatas(_ option: FetchOption, model: Model) throws -> [Entity.Name:
         [LoadingObjectData]]
     {
-        enum FetchObjectDatasError: Error {
-            case beginTransactionFailed
-            case fetchFailed
-            case commitFailed
-        }
-
         return try execute {
             // トランザクション開始
-            guard case .success(()) = beginTransaction() else {
-                throw FetchObjectDatasError.beginTransactionFailed
-            }
+            try beginTransaction()
 
-            guard case let .success(fetchedDatas) = loadObjectDatas(model: model, option: option)
-            else {
-                throw FetchObjectDatasError.fetchFailed
-            }
+            let fetchedDatas = try loadObjectDatas(model: model, option: option)
 
-            guard case .success(()) = commit() else {
-                throw FetchObjectDatasError.commitFailed
-            }
+            try commit()
 
             return fetchedDatas
         }
     }
 
     func clear(model: Model) throws -> OrgelInfo {
-        enum ClearError: Error {
-            case beginTransactionFailed
-            case clearDBFailed
-            case updateInfoFailed
-            case commitFailed
-        }
-
         return try execute {
             // トランザクション開始
-            guard case .success(()) = beginTransaction() else {
-                throw ClearError.beginTransactionFailed
-            }
+            try beginTransaction()
 
-            // DBをクリアする
-            guard case .success(()) = clearDB(model: model) else {
-                let _ = rollback()
-                throw ClearError.clearDBFailed
-            }
+            let info: OrgelInfo
 
-            // infoをクリア。セーブIDを0にする
-            guard case let .success(info) = updateInfo(currentSaveId: 0, lastSaveId: 0) else {
-                let _ = rollback()
-                throw ClearError.updateInfoFailed
+            do {
+                // DBをクリアする
+                try clearDB(model: model)
+
+                // infoをクリア。セーブIDを0にする
+                info = try updateInfo(currentSaveId: 0, lastSaveId: 0)
+            } catch {
+                _ = try? rollback()
+                throw error
             }
 
             // トランザクション終了
-            guard case .success(()) = commit() else {
-                throw ClearError.commitFailed
-            }
+            try commit()
 
             return info
         }
@@ -165,62 +106,37 @@ extension SQLiteExecutor {
     func save(model: Model, changedDatas: [Entity.Name: [SavingObjectData]]) throws
         -> SaveResult
     {
-        enum SaveError: Error {
-            case fetchInfoFailed
-            case beginTransactionFailed
-            case saveFailed(SQLiteExecutor.SaveError)
-            case removeRelationsFailed
-            case updateInfoFailed
-            case commitFailed
-        }
-
-        return try execute {
+        try execute {
             // データベースからセーブIDを取得する
-            guard case let .success(info) = fetchInfo() else {
-                throw SaveError.fetchInfoFailed
-            }
+            let info = try fetchInfo()
 
             guard !changedDatas.isEmpty else {
                 return ([:], info)
             }
 
             // トランザクション開始
-            guard case .success(()) = beginTransaction() else {
-                throw SaveError.beginTransactionFailed
-            }
+            try beginTransaction()
 
             // 変更のあったデータをデータベースに保存する
             let savedDatas: [Entity.Name: [LoadingObjectData]]
+            let updatedInfo: OrgelInfo
 
-            switch save(model: model, info: info, changedDatas: changedDatas) {
-            case let .success(value):
-                savedDatas = value
-            case let .failure(error):
-                let _ = rollback()
-                throw SaveError.saveFailed(error)
-            }
+            do {
+                savedDatas = try save(model: model, info: info, changedDatas: changedDatas)
 
-            guard
-                case .success(()) = removeRelationsAtSave(
+                try removeRelationsAtSave(
                     model: model, info: info, changedDatas: changedDatas)
-            else {
-                let _ = rollback()
-                throw SaveError.removeRelationsFailed
-            }
 
-            let nextSaveId = info.nextSaveId
+                let nextSaveId = info.nextSaveId
 
-            guard
-                case let .success(updatedInfo) = updateInfo(
+                updatedInfo = try updateInfo(
                     currentSaveId: nextSaveId, lastSaveId: nextSaveId)
-            else {
-                let _ = rollback()
-                throw SaveError.updateInfoFailed
+            } catch {
+                let _ = try? rollback()
+                throw error
             }
 
-            guard case .success(()) = commit() else {
-                throw SaveError.commitFailed
-            }
+            try commit()
 
             return (savedDatas, updatedInfo)
         }
@@ -231,127 +147,100 @@ extension SQLiteExecutor {
     )
 
     func revert(model: Model, revertSaveId: Int64) throws -> RevertResult {
-        enum RevertError: Error {
-            case beginTransactionFailed
-            case fetchInfoFailed
-            case invalidSaveId
-            case selectForRevertFailed
-            case getRelationsFailed
-            case makeObjectDatasFailed
-            case updateSaveIdFailed
-            case commitFailed
-        }
+        try execute {
+            enum RevertError: Error {
+                case invalidSaveId
+                case getRelationsFailed
+            }
 
-        return try execute {
             // トランザクション開始
-            guard case .success(()) = beginTransaction() else {
-                throw RevertError.beginTransactionFailed
-            }
-
-            // カレントとラストのセーブIDをデータベースから取得する
-            guard case let .success(info) = fetchInfo() else {
-                let _ = rollback()
-                throw RevertError.fetchInfoFailed
-            }
-
-            let currentSaveId = info.currentSaveId
-            let lastSaveId = info.lastSaveId
-
-            let modelEntities = model.entities
-
-            guard revertSaveId != currentSaveId && revertSaveId <= lastSaveId else {
-                let _ = rollback()
-                throw RevertError.invalidSaveId
-            }
-
-            var revertedAttributes: [Entity.Name: [[Attribute.Name: SQLValue]]] = [:]
-
-            for (entityName, _) in modelEntities {
-                // リバートするためのデータをデータベースから取得する
-                // カレントとの位置によってredoかundoが内部で呼ばれる
-                guard
-                    case let .success(selectResult) = selectForRevert(
-                        entityName: entityName, revertSaveId: revertSaveId,
-                        currentSaveId: currentSaveId)
-                else {
-                    let _ = rollback()
-                    throw RevertError.selectForRevertFailed
-                }
-
-                revertedAttributes[entityName] = selectResult
-            }
+            try beginTransaction()
 
             var revertedDatas: [Entity.Name: [LoadingObjectData]] = [:]
+            let updatedInfo: OrgelInfo
 
-            for (entityName, entityAttributes) in revertedAttributes {
-                guard let modelRelation = model.entities[entityName]?.relations else {
-                    let _ = rollback()
-                    throw RevertError.getRelationsFailed
+            do {
+                // カレントとラストのセーブIDをデータベースから取得する
+                let info = try fetchInfo()
+
+                let currentSaveId = info.currentSaveId
+                let lastSaveId = info.lastSaveId
+
+                let modelEntities = model.entities
+
+                guard revertSaveId != currentSaveId && revertSaveId <= lastSaveId else {
+                    throw RevertError.invalidSaveId
                 }
 
-                // アトリビュートのみのデータから関連のデータを加えてobject_dataを生成する
-                guard
-                    case let .success(objectDatas) = makeEntityObjectDatas(
+                var revertedAttributes: [Entity.Name: [[Attribute.Name: SQLValue]]] = [:]
+
+                for (entityName, _) in modelEntities {
+                    // リバートするためのデータをデータベースから取得する
+                    // カレントとの位置によってredoかundoが内部で呼ばれる
+                    let selectResult = try selectForRevert(
+                        entityName: entityName, revertSaveId: revertSaveId,
+                        currentSaveId: currentSaveId)
+
+                    revertedAttributes[entityName] = selectResult
+                }
+
+                for (entityName, entityAttributes) in revertedAttributes {
+                    guard let modelRelation = model.entities[entityName]?.relations else {
+                        throw RevertError.getRelationsFailed
+                    }
+
+                    // アトリビュートのみのデータから関連のデータを加えてobject_dataを生成する
+                    let objectDatas = try makeEntityObjectDatas(
                         entityName: entityName, modelRelations: modelRelation,
                         entityAttributes: entityAttributes)
-                else {
-                    let _ = rollback()
-                    throw RevertError.makeObjectDatasFailed
+
+                    revertedDatas[entityName] = objectDatas
                 }
 
-                revertedDatas[entityName] = objectDatas
-            }
-
-            // リバートしたセーブIDでinfoを更新する
-            guard case let .success(updatedInfo) = updateCurrentSaveId(revertSaveId) else {
-                let _ = rollback()
-                throw RevertError.updateSaveIdFailed
+                // リバートしたセーブIDでinfoを更新する
+                updatedInfo = try updateCurrentSaveId(revertSaveId)
+            } catch {
+                _ = try? rollback()
+                throw error
             }
 
             // トランザクション終了
-            guard case .success(()) = commit() else {
-                throw RevertError.commitFailed
-            }
+            try commit()
 
             return (revertedDatas, updatedInfo)
         }
     }
 
     func purge(model: Model) throws -> OrgelInfo {
-        enum PurgeError: Error {
-            case beginTransactionFailed
-            case purgeFailed
-            case updateInfoFailed
-            case commitFailed
-            case vacuumFailed
-        }
+        try execute {
+            enum PurgeError: Error {
+                case beginTransactionFailed
+                case purgeFailed
+                case updateInfoFailed
+                case commitFailed
+                case vacuumFailed
+            }
 
-        return try execute {
             // トランザクション開始
-            guard case .success(()) = beginTransaction() else {
-                throw PurgeError.beginTransactionFailed
-            }
+            try beginTransaction()
 
-            guard case .success(()) = purgeAll(model: model) else {
-                let _ = rollback()
-                throw PurgeError.purgeFailed
-            }
+            let info: OrgelInfo
 
-            // infoをクリア。セーブIDを1にする
-            guard case let .success(info) = updateInfo(currentSaveId: 1, lastSaveId: 1) else {
-                let _ = rollback()
-                throw PurgeError.updateInfoFailed
+            do {
+                try purgeAll(model: model)
+
+                // infoをクリア。セーブIDを1にする
+                info = try updateInfo(currentSaveId: 1, lastSaveId: 1)
+            } catch {
+                _ = try? rollback()
+                throw error
             }
 
             // トランザクション終了
-            guard case .success(()) = commit() else {
-                throw PurgeError.commitFailed
-            }
+            try commit()
 
             // バキュームする（バキュームはトランザクション中はできない）
-            guard case .success(()) = executeUpdate(.vacuum) else {
-                throw PurgeError.vacuumFailed
-            }
+            try executeUpdate(.vacuum)
 
             return info
         }

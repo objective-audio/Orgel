@@ -229,15 +229,15 @@ private struct DecodingSource {
             throw ObjectDecodingError.relationNotFound
         }
 
-        guard let loadedIds = relations[relationName] else {
+        guard let ids = relations[relationName] else {
             return []
         }
 
-        if !relation.many, loadedIds.count > 1 {
+        if !relation.many, ids.count > 1 {
             throw ObjectDecodingError.relationIdOverflow
         }
 
-        return loadedIds.map { $0 }
+        return ids.map { $0 }
     }
 }
 

@@ -21,26 +21,26 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
         let columnB = SQLColumn(name: .init("column_b"), valueType: .text)
         let columnC = SQLColumn(name: .init("column_c"), valueType: .real)
 
-        try await executor.createTable(tableA, columns: [columnA]).get()
+        try await executor.createTable(tableA, columns: [columnA])
         await AssertTrueAsync(await executor.tableExists(tableA))
 
-        try await executor.createTable(tableB, columns: [columnB]).get()
+        try await executor.createTable(tableB, columns: [columnB])
         await AssertTrueAsync(await executor.tableExists(tableB))
 
-        let schema1 = try await executor.tableSchema(tableA).get()
+        let schema1 = try await executor.tableSchema(tableA)
 
         XCTAssertEqual(schema1.count, 1)
         XCTAssertEqual(schema1[0][.name], .text("column_a"))
 
-        try await executor.alterTable(tableA, column: columnC).get()
+        try await executor.alterTable(tableA, column: columnC)
 
-        let schema2 = try await executor.tableSchema(tableA).get()
+        let schema2 = try await executor.tableSchema(tableA)
 
         XCTAssertEqual(schema2.count, 2)
         XCTAssertEqual(schema2[0][.name], .text("column_a"))
         XCTAssertEqual(schema2[1][.name], .text("column_c"))
 
-        try await executor.dropTable(tableB).get()
+        try await executor.dropTable(tableB)
 
         await AssertTrueAsync(await executor.tableExists(tableA))
         await AssertFalseAsync(await executor.tableExists(tableB))
@@ -53,11 +53,10 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
 
         try await executor.createTable(
             .init("test_table"), columns: [.init(name: .init("test_column"), valueType: .integer)]
-        ).get()
+        )
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value1')")
         )
-        .get()
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -65,18 +64,18 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
-        try await executor.beginTransaction().get()
+        try await executor.beginTransaction()
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value2')")
         )
-        .get()
+
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value3')")
         )
-        .get()
-        try await executor.commit().get()
+
+        try await executor.commit()
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -86,7 +85,7 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -96,11 +95,10 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
 
         try await executor.createTable(
             .init("test_table"), columns: [.init(name: .init("test_column"), valueType: .integer)]
-        ).get()
+        )
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value1')")
         )
-        .get()
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -108,18 +106,18 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
-        try await executor.beginTransaction().get()
+        try await executor.beginTransaction()
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value2')")
         )
-        .get()
+
         try await executor.executeUpdate(
             .raw("insert into test_table(test_column) values('value3')")
         )
-        .get()
-        try await executor.rollback().get()
+
+        try await executor.rollback()
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -127,7 +125,7 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 XCTAssertTrue(iterator.next())
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -137,7 +135,7 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
 
         try await executor.createTable(
             .init("test_table"), columns: [.init(name: .init("column"), valueType: .integer)]
-        ).get()
+        )
 
         await AssertTrueAsync(await executor.tableExists(.init("test_table")))
         await AssertFalseAsync(await executor.tableExists(.init("hoge")))
@@ -150,18 +148,18 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
 
         try await executor.createTable(
             .init("test_table"), columns: [.init(name: .init("column"), valueType: .integer)]
-        ).get()
+        )
 
         await AssertFalseAsync(await executor.indexExists(.init("test_index")))
 
         try await executor.createIndex(
             .init("test_index"), table: .init("test_table"), columnNames: [.init("column")]
-        ).get()
+        )
 
         await AssertTrueAsync(await executor.indexExists(.init("test_index")))
         await AssertFalseAsync(await executor.indexExists(.init("hoge")))
 
-        try await executor.dropIndex(.init("test_index")).get()
+        try await executor.dropIndex(.init("test_index"))
 
         await AssertFalseAsync(await executor.indexExists(.init("test_index")))
 
@@ -178,7 +176,6 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 .init(name: .init("column_b"), valueType: .text),
             ]
         )
-        .get()
 
         await AssertTrueAsync(
             await executor.columnExists(columnName: "column_a", tableName: "test_table"))
@@ -197,12 +194,12 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
         let executor = await TestUtils.makeAndOpenExecutor(uuid: uuid)
 
         let sql1 = "CREATE TABLE test_table_1 (test_column)"
-        try await executor.executeUpdate(.raw(sql1)).get()
+        try await executor.executeUpdate(.raw(sql1))
 
         let sql2 = "CREATE TABLE test_table_2 (test_column)"
-        try await executor.executeUpdate(.raw(sql2)).get()
+        try await executor.executeUpdate(.raw(sql2))
 
-        let schema = try await executor.schema().get()
+        let schema = try await executor.schema()
 
         XCTAssertEqual(schema.count, 2)
 
@@ -231,9 +228,8 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 .init(name: .init("column_b"), valueType: .text),
             ]
         )
-        .get()
 
-        let schema = try await executor.tableSchema(.init("test_table")).get()
+        let schema = try await executor.tableSchema(.init("test_table"))
 
         XCTAssertEqual(schema.count, 2)
         XCTAssertNotNil(schema[0][.System.pk])
@@ -259,12 +255,12 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
                 .init(name: .init("column_b"), valueType: .text),
             ]
         )
-        .get()
+
         try await executor.createIndex(
             .init("test_index"), table: .init("test_table"), columnNames: [.init("column_a")]
-        ).get()
+        )
 
-        let schema = try await executor.indexSchema(.init("test_index")).get()
+        let schema = try await executor.indexSchema(.init("test_index"))
 
         XCTAssertEqual(schema[.System.type], .text("index"))
         XCTAssertEqual(schema[.System.name], .text("test_index"))
@@ -283,28 +279,28 @@ final class SQLiteExecutorAdditionsTests: XCTestCase {
         let columnA = SQLColumn(name: columnNameA, valueType: .integer)
         let columnB = SQLColumn(name: columnNameB, valueType: .text)
 
-        try await executor.createTable(table, columns: [columnA, columnB]).get()
+        try await executor.createTable(table, columns: [columnA, columnB])
 
         let params1: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a_1"), .init("column_b"): .text("value_b_1"),
         ]
         try await executor.executeUpdate(
             .insert(table: table, columnNames: [columnNameA, columnNameB]), parameters: params1
-        ).get()
+        )
 
         let params2: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a_2"), .init("column_b"): .text("value_b_2"),
         ]
         try await executor.executeUpdate(
             .insert(table: table, columnNames: [columnNameA, columnNameB]), parameters: params2
-        ).get()
+        )
 
         let selected = try await executor.select(
             .init(
                 table: table, field: .columns([columnNameA, columnNameB]),
                 where: .expression(.compare(columnNameA, .equal, .name(parameterNameA))),
                 parameters: [parameterNameA: .text("value_a_2")])
-        ).get()
+        )
 
         XCTAssertEqual(selected.count, 1)
 

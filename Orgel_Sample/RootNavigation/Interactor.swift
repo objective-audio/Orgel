@@ -49,7 +49,7 @@ final class Interactor {
         databaseContainer.data.objectPublisher.sink { [weak self] object in
             guard let self else { return }
 
-            #warning("todo 消したい")
+            #warning("todo 消したい?")
             if !object.isAvailable {
                 self.objects[object.entity.name]?[object.id] = nil
             }

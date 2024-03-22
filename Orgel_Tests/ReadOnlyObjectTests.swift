@@ -31,7 +31,7 @@ final class ReadOnlyObjectTests: XCTestCase {
 
         let object = ReadOnlyObject(entity: entity, data: data)
 
-        XCTAssertEqual(object.loadedId.stable.rawValue, 1)
+        XCTAssertEqual(object.loadingId.stable.rawValue, 1)
         XCTAssertEqual(object.action, .insert)
         XCTAssertEqual(object.saveId, 555)
         XCTAssertEqual(object.attributeValue(forName: .age), .integer(10))

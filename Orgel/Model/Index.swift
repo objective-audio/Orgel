@@ -3,18 +3,18 @@ import Foundation
 public struct Index: Sendable {
     public typealias Name = SQLIndex
 
-    public enum InitError: Error {
-        case nameIsEmpty
-        case entityIsEmpty
-        case attributesAreEmpty
-        case attributeIsEmpty
-    }
-
     public let name: Name
     public let entity: Entity.Name
     public let attributes: [Attribute.Name]
 
     public init(name: Name, entity: Entity.Name, attributes: [Attribute.Name]) throws {
+        enum InitError: Error {
+            case nameIsEmpty
+            case entityIsEmpty
+            case attributesAreEmpty
+            case attributeIsEmpty
+        }
+
         self.name = name
         self.entity = entity
         self.attributes = attributes

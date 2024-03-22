@@ -1,13 +1,6 @@
 import Foundation
 
 public struct OrgelInfo: Equatable, Sendable {
-    public enum InitError: Error {
-        case versionNotFound
-        case invalidVersion
-        case currentSaveIdNotFound
-        case lastSaveIdNotFound
-    }
-
     public let version: Version
     public let currentSaveId: Int64
     public let lastSaveId: Int64
@@ -25,6 +18,13 @@ public struct OrgelInfo: Equatable, Sendable {
     }
 
     init(values: [SQLColumn.Name: SQLValue]) throws {
+        enum InitError: Error {
+            case versionNotFound
+            case invalidVersion
+            case currentSaveIdNotFound
+            case lastSaveIdNotFound
+        }
+
         guard let versionText = values[.version]?.textValue else {
             throw InitError.versionNotFound
         }

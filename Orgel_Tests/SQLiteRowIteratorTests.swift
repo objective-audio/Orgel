@@ -17,7 +17,6 @@ final class SQLiteIteratorTests: XCTestCase {
         let executor = await TestUtils.makeAndOpenExecutor(uuid: uuid)
 
         try await executor.executeUpdate(.raw("create table test_table (column_a, column_b);"))
-            .get()
 
         let params: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a"), .init("column_b"): .null,
@@ -25,7 +24,7 @@ final class SQLiteIteratorTests: XCTestCase {
         try await executor.executeUpdate(
             .raw("insert into test_table(column_a, column_b) values(:column_a, :column_b)"),
             parameters: params
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select column_a, column_b from test_table"),
@@ -43,7 +42,7 @@ final class SQLiteIteratorTests: XCTestCase {
                 XCTAssertFalse(iterator.columnIsNull(forName: "column_a"))
                 XCTAssertTrue(iterator.columnIsNull(forName: "column_b"))
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -52,7 +51,6 @@ final class SQLiteIteratorTests: XCTestCase {
         let executor = await TestUtils.makeAndOpenExecutor(uuid: uuid)
 
         try await executor.executeUpdate(.raw("create table test_table (column_a, column_b);"))
-            .get()
 
         let params: [SQLParameter.Name: SQLValue] = [
             .init("column_a"): .text("value_a"), .init("column_b"): .null,
@@ -61,7 +59,7 @@ final class SQLiteIteratorTests: XCTestCase {
         try await executor.executeUpdate(
             .raw("insert into test_table(column_a, column_b) values(:column_a, :column_b)"),
             parameters: params
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select column_a, column_b from test_table"),
@@ -76,7 +74,7 @@ final class SQLiteIteratorTests: XCTestCase {
 
                 XCTAssertFalse(iterator.hasRow)
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -88,7 +86,7 @@ final class SQLiteIteratorTests: XCTestCase {
             .raw(
                 "create table test_table (int_column, float_column, string_column, data_column, null_column);"
             )
-        ).get()
+        )
 
         let data = Data([UInt8]([0, 1, 2, 3]))
 
@@ -103,7 +101,7 @@ final class SQLiteIteratorTests: XCTestCase {
                 "insert into test_table(int_column, float_column, string_column, data_column, null_column) values(:int_column, :float_column, :string_column, :data_column, :null_column)"
             ),
             parameters: params
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -136,7 +134,7 @@ final class SQLiteIteratorTests: XCTestCase {
 
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }
@@ -148,7 +146,7 @@ final class SQLiteIteratorTests: XCTestCase {
             .raw(
                 "create table test_table (int_column, float_column, string_column, data_column, null_column);"
             )
-        ).get()
+        )
 
         let data = Data([UInt8]([0, 1, 2, 3]))
 
@@ -163,7 +161,7 @@ final class SQLiteIteratorTests: XCTestCase {
                 "insert into test_table(int_column, float_column, string_column, data_column, null_column) values(:int_column, :float_column, :string_column, :data_column, :null_column)"
             ),
             parameters: params
-        ).get()
+        )
 
         try await executor.executeQuery(
             .raw("select * from test_table"),
@@ -192,7 +190,7 @@ final class SQLiteIteratorTests: XCTestCase {
 
                 XCTAssertFalse(iterator.next())
             }
-        ).get()
+        )
 
         await executor.close()
     }

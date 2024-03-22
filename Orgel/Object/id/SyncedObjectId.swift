@@ -51,12 +51,12 @@ struct SyncedObjectId {
         rawValue = .temporary(.init())
     }
 
-    mutating func replaceId(_ loadedId: LoadingObjectId) {
+    mutating func replaceId(_ loadingId: LoadingObjectId) {
         if hasValue {
-            precondition(loadedId.temporary == nil || (loadedId.temporary == self.temporary))
+            precondition(loadingId.temporary == nil || (loadingId.temporary == self.temporary))
         }
 
-        switch loadedId {
+        switch loadingId {
         case let .both(stable, temporary):
             rawValue = .both(stable: stable, temporary: .init(temporary.rawValue))
         case let .stable(stable):

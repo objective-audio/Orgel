@@ -14,7 +14,7 @@
 		B6C574D92BABC9ED004ACE94 /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574952BABC9ED004ACE94 /* Weak.swift */; };
 		B6C574DA2BABC9ED004ACE94 /* FetchedResultData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */; };
 		B6C574DB2BABC9ED004ACE94 /* FetchOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574982BABC9ED004ACE94 /* FetchOption.swift */; };
-		B6C574DC2BABC9ED004ACE94 /* LoadedIdPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */; };
+		B6C574DC2BABC9ED004ACE94 /* LoadingIdPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574992BABC9ED004ACE94 /* LoadingIdPool.swift */; };
 		B6C574DD2BABC9ED004ACE94 /* OrgelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */; };
 		B6C574DE2BABC9ED004ACE94 /* OrgelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */; };
 		B6C574DF2BABC9ED004ACE94 /* OrgelExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */; };
@@ -76,7 +76,7 @@
 		B6C574952BABC9ED004ACE94 /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedResultData.swift; sourceTree = "<group>"; };
 		B6C574982BABC9ED004ACE94 /* FetchOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOption.swift; sourceTree = "<group>"; };
-		B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadedIdPool.swift; sourceTree = "<group>"; };
+		B6C574992BABC9ED004ACE94 /* LoadingIdPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingIdPool.swift; sourceTree = "<group>"; };
 		B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelContainer.swift; sourceTree = "<group>"; };
 		B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelData.swift; sourceTree = "<group>"; };
 		B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgelExecutor.swift; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 			children = (
 				B6C574972BABC9ED004ACE94 /* FetchedResultData.swift */,
 				B6C574982BABC9ED004ACE94 /* FetchOption.swift */,
-				B6C574992BABC9ED004ACE94 /* LoadedIdPool.swift */,
+				B6C574992BABC9ED004ACE94 /* LoadingIdPool.swift */,
 				B6C5749A2BABC9ED004ACE94 /* OrgelContainer.swift */,
 				B6C5749B2BABC9ED004ACE94 /* OrgelData.swift */,
 				B6C5749C2BABC9ED004ACE94 /* OrgelExecutor.swift */,
@@ -409,7 +409,7 @@
 				B6C574FC2BABC9ED004ACE94 /* SQLValueAdditions.swift in Sources */,
 				B6C574EE2BABC9ED004ACE94 /* SavingObjectData.swift in Sources */,
 				B6C574F02BABC9ED004ACE94 /* ObjectId.swift in Sources */,
-				B6C574DC2BABC9ED004ACE94 /* LoadedIdPool.swift in Sources */,
+				B6C574DC2BABC9ED004ACE94 /* LoadingIdPool.swift in Sources */,
 				B6C574F12BABC9ED004ACE94 /* StableId.swift in Sources */,
 				B6C574E82BABC9ED004ACE94 /* ObjectCodable.swift in Sources */,
 				B6C575052BABC9ED004ACE94 /* SQLIndex.swift in Sources */,

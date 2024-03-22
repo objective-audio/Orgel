@@ -5,14 +5,14 @@ public actor OrgelExecutor {
     let queue: SerialTaskQueue
     let data: OrgelData
     let sqliteExecutor: SQLiteExecutor
-    let loadedIdPool: LoadedIdPool
+    let loadingIdPool: LoadingIdPool
 
     init(model: Model, data: OrgelData, sqliteExecutor: SQLiteExecutor) {
         self.model = model
         self.queue = .init()
         self.data = data
         self.sqliteExecutor = sqliteExecutor
-        self.loadedIdPool = .init()
+        self.loadingIdPool = .init()
     }
 
     public func insertSyncedObjects(
@@ -45,7 +45,7 @@ public actor OrgelExecutor {
         let taskId = await queue.addTask()
         return try await queue.execute(id: taskId) {
             let objectDatas = try await sqliteExecutor.fetchObjectDatas(option, model: model)
-            let idReplacedObjectDatas = await loadedIdPool.idReplacedObjectDatas(
+            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
                 objectDatas, model: model)
             return try await data.loadFetched(objectDatas: idReplacedObjectDatas)
         }
@@ -55,7 +55,7 @@ public actor OrgelExecutor {
         let taskId = await queue.addTask()
         return try await queue.execute(id: taskId) {
             let objectDatas = try await sqliteExecutor.fetchObjectDatas(option, model: model)
-            let idReplacedObjectDatas = await loadedIdPool.idReplacedObjectDatas(
+            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
                 objectDatas, model: model)
             return try makeReadOnlyObjects(objectDatas: idReplacedObjectDatas)
         }
@@ -97,7 +97,7 @@ public actor OrgelExecutor {
         let taskId = await queue.addTask()
         return try await queue.execute(id: taskId) {
             let info = try await sqliteExecutor.clear(model: model)
-            await loadedIdPool.clear()
+            await loadingIdPool.clear()
             await data.loadCleared(info: info)
         }
     }
@@ -107,7 +107,7 @@ public actor OrgelExecutor {
         return try await queue.execute(id: taskId) {
             let changedDatas = try await data.changedObjectDatasForSave()
             let result = try await sqliteExecutor.save(model: model, changedDatas: changedDatas)
-            await loadedIdPool.set(from: result.savedDatas)
+            await loadingIdPool.set(from: result.savedDatas)
             return try await data.loadSaved(result)
         }
     }
@@ -116,7 +116,7 @@ public actor OrgelExecutor {
         let taskId = await queue.addTask()
         return try await queue.execute(id: taskId) {
             let result = try await sqliteExecutor.revert(model: model, revertSaveId: saveId)
-            let idReplacedObjectDatas = await loadedIdPool.idReplacedObjectDatas(
+            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
                 result.revertedDatas, model: model)
             return try await data.loadReverted(
                 (revertedDatas: idReplacedObjectDatas, info: result.info))
@@ -137,7 +137,7 @@ public actor OrgelExecutor {
             let ids = await data.changedObjectIdsForReset()
             let objectDatas = try await sqliteExecutor.fetchObjectDatas(
                 .init(stableIds: ids), model: model)
-            let idReplacedObjectDatas = await loadedIdPool.idReplacedObjectDatas(
+            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
                 objectDatas, model: model)
             return try await data.loadReset(objectDatas: idReplacedObjectDatas)
         }

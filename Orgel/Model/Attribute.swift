@@ -34,10 +34,6 @@ public struct Attribute: Sendable {
         }
     }
 
-    public enum InitError: Error {
-        case nameIsEmpty
-    }
-
     public let name: Name
     public let value: Value
     public let primary: Bool
@@ -98,6 +94,10 @@ public struct Attribute: Sendable {
         name: Name, value: Value,
         primary: Bool = false, unique: Bool = false
     ) throws {
+        enum InitError: Error {
+            case nameIsEmpty
+        }
+
         self.name = name
         self.value = value
         self.primary = primary
