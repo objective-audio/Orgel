@@ -43,12 +43,12 @@ public protocol ObjectRelational {
 }
 
 public protocol ObjectModelable {
-    static var tableName: String { get }
+    static var entity: Model.EntityArgs { get }
 }
 
 extension ObjectModelable {
-    public static var tableName: String { .init(describing: self) }
-    public static var entityName: Entity.Name { .init(tableName) }
+    public static var tableName: String { entity.name.rawValue }
+    public static var entityName: Entity.Name { entity.name }
     public static var table: SQLTable { .init(tableName) }
 }
 

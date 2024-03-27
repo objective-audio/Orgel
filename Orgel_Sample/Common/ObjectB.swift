@@ -1,19 +1,13 @@
 import Foundation
 import Orgel
+import OrgelObject
 
+@OrgelObject
 struct ObjectB: ObjectCodable {
     struct Attributes: AttributesCodable {
-        var name: String
+        var name: String = "empty_name"
     }
 
     struct Relations: RelationsCodable {
     }
-
-    struct Id: RelationalId {
-        let rawId: ObjectId
-    }
-
-    let id: Id
-    var attributes: Attributes
-    var relations: Relations
 }

@@ -65,6 +65,7 @@
 		B63770282BABF2CE002E3D30 /* SQLUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376FED2BABF2CE002E3D30 /* SQLUpdate.swift */; };
 		B63770292BABF2CE002E3D30 /* SQLValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376FEE2BABF2CE002E3D30 /* SQLValue.swift */; };
 		B637702A2BABF2CE002E3D30 /* SQLWhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6376FEF2BABF2CE002E3D30 /* SQLWhere.swift */; };
+		B63D3A902BB55291009D84AB /* OrgelObject in Frameworks */ = {isa = PBXBuildFile; productRef = B63D3A8F2BB55291009D84AB /* OrgelObject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B63D3A902BB55291009D84AB /* OrgelObject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +147,7 @@
 			children = (
 				B6376FA62BABF296002E3D30 /* Orgel */,
 				B6376FA52BABF296002E3D30 /* Products */,
+				B63D3A8E2BB55291009D84AB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -310,6 +313,13 @@
 			path = ../../Orgel;
 			sourceTree = "<group>";
 		};
+		B63D3A8E2BB55291009D84AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -338,6 +348,9 @@
 			dependencies = (
 			);
 			name = Orgel;
+			packageProductDependencies = (
+				B63D3A8F2BB55291009D84AB /* OrgelObject */,
+			);
 			productName = Orgel;
 			productReference = B6376FA42BABF296002E3D30 /* Orgel.framework */;
 			productType = "com.apple.product-type.framework";
@@ -662,6 +675,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B63D3A8F2BB55291009D84AB /* OrgelObject */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OrgelObject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B6376F9B2BABF296002E3D30 /* Project object */;
 }

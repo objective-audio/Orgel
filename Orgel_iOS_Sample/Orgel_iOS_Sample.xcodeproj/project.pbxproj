@@ -185,20 +185,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		B6376F372BABE80D002E3D30 /* DatabaseAdditions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DatabaseAdditions;
-			sourceTree = "<group>";
-		};
-		B6376F382BABE80D002E3D30 /* Lifecycle */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Lifecycle;
-			sourceTree = "<group>";
-		};
 		B6376F3F2BABE80D002E3D30 /* Object */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,8 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				B6376F362BABE80D002E3D30 /* Common */,
-				B6376F372BABE80D002E3D30 /* DatabaseAdditions */,
-				B6376F382BABE80D002E3D30 /* Lifecycle */,
 				B6376F3F2BABE80D002E3D30 /* Object */,
 				B6376F432BABE80D002E3D30 /* ObjectSelection */,
 				B6376F4A2BABE80D002E3D30 /* Relation */,

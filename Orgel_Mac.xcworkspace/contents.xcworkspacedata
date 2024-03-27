@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Orgel_Mac/Orgel.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Macros/OrgelObject">
+   </FileRef>
 </Workspace>

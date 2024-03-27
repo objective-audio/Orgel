@@ -142,31 +142,7 @@ enum TestUtils {
     static func makeModel0_0_2() -> Model {
         let version = try! Version("0.0.2")
 
-        let objectA = Model.EntityArgs(
-            name: .objectA,
-            attributes: [
-                .init(name: .age, value: .integer(.notNull(10))),
-                .init(name: .name, value: .text(.allowNull("default_value"))),
-                .init(name: .weight, value: .real(.allowNull(65.4))),
-                .init(name: .tall, value: .real(.allowNull(172.4))),
-                .init(name: .data, value: .blob(.allowNull(nil))),
-            ],
-            relations: [
-                .init(name: .children, target: .objectB, many: true),
-                .init(name: .friend, target: .objectC),
-            ])
-
-        let objectB = Model.EntityArgs(
-            name: .objectB,
-            attributes: [.init(name: .fullname, value: .text(.allowNull(nil)))],
-            relations: [.init(name: .parent, target: .objectA)])
-
-        let objectC = Model.EntityArgs(
-            name: .objectC,
-            attributes: [.init(name: .nickname, value: .text(.allowNull(nil)))],
-            relations: [.init(name: .friend, target: .objectA)])
-
-        let entities = [objectA, objectB, objectC]
+        let entities = [ObjectA.entity, ObjectB.entity, ObjectC.entity]
 
         let objectANameIndex = Model.IndexArgs(
             name: .objectAName, entity: .objectA, attributes: [.name])
