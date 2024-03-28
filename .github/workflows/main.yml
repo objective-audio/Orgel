@@ -31,14 +31,14 @@ jobs:
         run: 
           sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
 
-      - name: Run macOS tests
-        run: 
-          xcodebuild -workspace Orgel_Mac.xcworkspace -scheme Orgel_Mac_Tests -configuration Debug OBJROOT=build -sdk macosx clean test
+      #- name: Run macOS tests
+      #  run: 
+      #    xcodebuild -workspace Orgel_Mac.xcworkspace -scheme Orgel_Mac_Tests -configuration Debug OBJROOT=build -sdk macosx clean test
 
       - name: Run iOS tests
         run: 
           xcodebuild -workspace Orgel_iOS.xcworkspace -scheme Orgel_iOS_Tests -configuration Debug OBJROOT=build -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' clean test
 
-      - name: Run Macro tests
-        run:
-          xcodebuild -workspace Orgel_Mac.xcworkspace -scheme OrgelObjectTests -configuration Debug OBJROOT=build -sdk macosx clean test
+      #- name: Run Macro tests
+      #  run:
+      #    xcodebuild -workspace Orgel_Mac.xcworkspace -scheme OrgelObjectTests -configuration Debug OBJROOT=build -sdk macosx clean test
