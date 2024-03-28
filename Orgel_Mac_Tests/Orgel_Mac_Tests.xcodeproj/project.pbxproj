@@ -44,9 +44,24 @@
 		B63770852BAC0AAD002E3D30 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63770602BAC0AAD002E3D30 /* TestUtils.swift */; };
 		B63770862BAC0AAD002E3D30 /* VersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63770612BAC0AAD002E3D30 /* VersionTests.swift */; };
 		B63770892BAC0AC6002E3D30 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B63770882BAC0AC6002E3D30 /* Collections */; };
-		B66749152BAC6E5800FFDCA9 /* Orgel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B66749142BAC6E5800FFDCA9 /* Orgel.framework */; };
 		B6DB02652BB55B5500B8926C /* OrgelObject in Frameworks */ = {isa = PBXBuildFile; productRef = B6DB02642BB55B5500B8926C /* OrgelObject */; };
+		B6DB02702BB55BF600B8926C /* Orgel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B66749142BAC6E5800FFDCA9 /* Orgel.framework */; };
+		B6DB02712BB55BF600B8926C /* Orgel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B66749142BAC6E5800FFDCA9 /* Orgel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B6DB02722BB55BF600B8926C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B6DB02712BB55BF600B8926C /* Orgel.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B63770362BAC0A8E002E3D30 /* Orgel_Mac_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Orgel_Mac_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,9 +109,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B66749152BAC6E5800FFDCA9 /* Orgel.framework in Frameworks */,
 				B6DB02652BB55B5500B8926C /* OrgelObject in Frameworks */,
 				B63770892BAC0AC6002E3D30 /* Collections in Frameworks */,
+				B6DB02702BB55BF600B8926C /* Orgel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +198,7 @@
 				B63770322BAC0A8E002E3D30 /* Sources */,
 				B63770332BAC0A8E002E3D30 /* Frameworks */,
 				B63770342BAC0A8E002E3D30 /* Resources */,
+				B6DB02722BB55BF600B8926C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

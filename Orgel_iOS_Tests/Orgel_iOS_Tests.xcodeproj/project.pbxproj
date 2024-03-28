@@ -43,19 +43,20 @@
 		B6C575682BABCBA6004ACE94 /* TestObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C575432BABCBA6004ACE94 /* TestObjects.swift */; };
 		B6C575692BABCBA6004ACE94 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C575442BABCBA6004ACE94 /* TestUtils.swift */; };
 		B6C5756A2BABCBA6004ACE94 /* VersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C575452BABCBA6004ACE94 /* VersionTests.swift */; };
-		B6C5756D2BABCBB7004ACE94 /* Orgel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C5756C2BABCBB7004ACE94 /* Orgel.framework */; };
-		B6C5756E2BABCBB7004ACE94 /* Orgel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6C5756C2BABCBB7004ACE94 /* Orgel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B6C575722BABCBE8004ACE94 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B6C575712BABCBE8004ACE94 /* Collections */; };
+		B6DB02672BB55BB400B8926C /* OrgelObject in Frameworks */ = {isa = PBXBuildFile; productRef = B6DB02662BB55BB400B8926C /* OrgelObject */; };
+		B6DB026A2BB55BD000B8926C /* Orgel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C5756C2BABCBB7004ACE94 /* Orgel.framework */; };
+		B6DB026B2BB55BD000B8926C /* Orgel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6C5756C2BABCBB7004ACE94 /* Orgel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B6C5756F2BABCBB7004ACE94 /* Embed Frameworks */ = {
+		B6DB026C2BB55BD000B8926C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B6C5756E2BABCBB7004ACE94 /* Orgel.framework in Embed Frameworks */,
+				B6DB026B2BB55BD000B8926C /* Orgel.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,7 +110,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6C575722BABCBE8004ACE94 /* Collections in Frameworks */,
-				B6C5756D2BABCBB7004ACE94 /* Orgel.framework in Frameworks */,
+				B6DB02672BB55BB400B8926C /* OrgelObject in Frameworks */,
+				B6DB026A2BB55BD000B8926C /* Orgel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,7 +198,7 @@
 				B6C575162BABCB4D004ACE94 /* Sources */,
 				B6C575172BABCB4D004ACE94 /* Frameworks */,
 				B6C575182BABCB4D004ACE94 /* Resources */,
-				B6C5756F2BABCBB7004ACE94 /* Embed Frameworks */,
+				B6DB026C2BB55BD000B8926C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -205,6 +207,7 @@
 			name = Orgel_iOS_Tests;
 			packageProductDependencies = (
 				B6C575712BABCBE8004ACE94 /* Collections */,
+				B6DB02662BB55BB400B8926C /* OrgelObject */,
 			);
 			productName = Orgel_iOS_Tests;
 			productReference = B6C5751A2BABCB4D004ACE94 /* Orgel_iOS_Tests.xctest */;
@@ -512,6 +515,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B6C575702BABCBE8004ACE94 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = Collections;
+		};
+		B6DB02662BB55BB400B8926C /* OrgelObject */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OrgelObject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
