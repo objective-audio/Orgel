@@ -65,6 +65,7 @@
 		B6C5750C2BABC9ED004ACE94 /* SQLUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D12BABC9ED004ACE94 /* SQLUpdate.swift */; };
 		B6C5750D2BABC9ED004ACE94 /* SQLValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D22BABC9ED004ACE94 /* SQLValue.swift */; };
 		B6C5750E2BABC9ED004ACE94 /* SQLWhere.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C574D32BABC9ED004ACE94 /* SQLWhere.swift */; };
+		B6DB02742BB5601000B8926C /* OrgelObject in Frameworks */ = {isa = PBXBuildFile; productRef = B6DB02732BB5601000B8926C /* OrgelObject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6DB02742BB5601000B8926C /* OrgelObject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +349,7 @@
 			);
 			name = Orgel;
 			packageProductDependencies = (
+				B6DB02732BB5601000B8926C /* OrgelObject */,
 			);
 			productName = Orgel;
 			productReference = B6C5747D2BABC90A004ACE94 /* Orgel.framework */;
@@ -673,6 +676,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B6DB02732BB5601000B8926C /* OrgelObject */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OrgelObject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B6C574742BABC90A004ACE94 /* Project object */;
 }
