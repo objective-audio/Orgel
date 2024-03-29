@@ -23,7 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -31,14 +31,20 @@ jobs:
         run: 
           sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
 
-      #- name: Run macOS tests
-      #  run: 
-      #    xcodebuild -workspace Orgel_Mac.xcworkspace -scheme Orgel_Mac_Tests -configuration Debug OBJROOT=build -sdk macosx clean test
+      - name: Run Mac tests
+        run:
+          xcodebuild
+            -workspace Orgel.xcworkspace
+            -scheme Orgel
+            -configuration debug
+            -destination 'platform=macOS'
+            clean test
 
-      - name: Run iOS tests
-        run: 
-          xcodebuild -workspace Orgel_iOS.xcworkspace -scheme Orgel_iOS_Tests -configuration Debug OBJROOT=build -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' clean test
-
-      #- name: Run Macro tests
-      #  run:
-      #    xcodebuild -workspace Orgel_Mac.xcworkspace -scheme OrgelObjectTests -configuration Debug OBJROOT=build -sdk macosx clean test
+      - name: Run Macro tests
+        run:
+          xcodebuild
+            -workspace Orgel.xcworkspace
+            -scheme OrgelMacrosTests
+            -configuration debug
+            -destination 'platform=macOS'
+            clean test
