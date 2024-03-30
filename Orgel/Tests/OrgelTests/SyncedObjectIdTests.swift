@@ -104,21 +104,21 @@ final class SyncedObjectIdTests: XCTestCase {
         let stableId = SyncedObjectId(stable: .init(1))
         var temporaryId = SyncedObjectId()
         temporaryId.setNewTemporary()
-        let eachId = SyncedObjectId(stable: .init(2), temporary: "3")
+        let bothId = SyncedObjectId(stable: .init(2), temporary: "3")
 
         XCTAssertTrue(stableId.objectId.isStable)
         XCTAssertFalse(temporaryId.objectId.isStable)
-        XCTAssertTrue(eachId.objectId.isStable)
+        XCTAssertTrue(bothId.objectId.isStable)
     }
 
     func testIsTemporary() {
         let stableId = SyncedObjectId(stable: .init(1))
         var temporaryId = SyncedObjectId()
         temporaryId.setNewTemporary()
-        let eachId = SyncedObjectId(stable: .init(2), temporary: "3")
+        let bothId = SyncedObjectId(stable: .init(2), temporary: "3")
 
         XCTAssertFalse(stableId.objectId.isTemporary)
         XCTAssertTrue(temporaryId.objectId.isTemporary)
-        XCTAssertFalse(eachId.objectId.isTemporary)
+        XCTAssertFalse(bothId.objectId.isTemporary)
     }
 }
