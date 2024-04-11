@@ -46,3 +46,11 @@ jobs:
             -configuration debug
             -destination 'platform=macOS'
             clean test
+
+      - name: Run iOS build
+        run:
+          xcodebuild
+            -scheme Orgel
+            -configuration debug
+            -destination 'platform=iOS Simulator,name=iPhone 15'
+            clean build
