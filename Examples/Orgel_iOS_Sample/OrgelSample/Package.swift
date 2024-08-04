@@ -10,17 +10,17 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "OrgelSample",
-            targets: ["OrgelSample"]),
+            targets: ["OrgelSample"])
     ],
     dependencies: [
         .package(path: "../Orgel"),
-        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.0"),
+        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.1"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "OrgelSample", 
+            name: "OrgelSample",
             dependencies: [
                 "Orgel",
                 .product(name: "OrderedCollections", package: "swift-collections"),
