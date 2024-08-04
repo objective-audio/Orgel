@@ -1,5 +1,5 @@
-import SwiftUI
 import OrgelSample
+import SwiftUI
 
 @main
 struct Orgel_iOS_SampleApp: App {

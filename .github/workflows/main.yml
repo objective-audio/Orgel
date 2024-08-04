@@ -34,7 +34,6 @@ jobs:
       - name: Run Mac tests
         run:
           xcodebuild
-            -workspace Orgel.xcworkspace
             -scheme Orgel
             -configuration debug
             -destination 'platform=macOS'
@@ -43,8 +42,15 @@ jobs:
       - name: Run Macro tests
         run:
           xcodebuild
-            -workspace Orgel.xcworkspace
             -scheme OrgelMacrosTests
             -configuration debug
             -destination 'platform=macOS'
             clean test
+
+      - name: Run iOS build
+        run:
+          xcodebuild
+            -scheme Orgel
+            -configuration debug
+            -destination 'platform=iOS Simulator,name=iPhone 15'
+            clean build

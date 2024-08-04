@@ -14,8 +14,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.0"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0"),
+        .package(url: "https://github.com/apple/swift-collections.git", from: "1.1.1"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "510.0.2"),
     ],
     targets: [
         .macro(
@@ -29,7 +29,12 @@ let package = Package(
             name: "Orgel",
             dependencies: [
                 "OrgelMacros"
-            ]),
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("ExistentialAny"),
+                .enableUpcomingFeature("StrictConcurrency")
+            ]
+        ),
         .testTarget(
             name: "OrgelTests",
             dependencies: [

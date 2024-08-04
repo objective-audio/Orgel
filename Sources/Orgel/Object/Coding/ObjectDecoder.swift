@@ -17,7 +17,7 @@ enum ObjectDecodingError: Error {
 final class ObjectDecoder: Decoder {
     private struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         let source: DecodingSource
-        let codingPath: [CodingKey] = []
+        let codingPath: [any CodingKey] = []
         var allKeys: [Key] { fatalError() }
 
         func contains(_ key: Key) -> Bool {
@@ -49,20 +49,20 @@ final class ObjectDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
+        func nestedUnkeyedContainer(forKey key: Key) throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder() throws -> Decoder {
+        func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder(forKey key: Key) throws -> Decoder {
+        func superDecoder(forKey key: Key) throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
-    let codingPath: [CodingKey] = []
+    let codingPath: [any CodingKey] = []
     let userInfo: [CodingUserInfoKey: Any] = [:]
 
     private var source: DecodingSource?
@@ -75,11 +75,11 @@ final class ObjectDecoder: Decoder {
         return KeyedDecodingContainer(KeyedContainer(source: source))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    func singleValueContainer() throws -> any SingleValueDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 
@@ -116,7 +116,8 @@ private struct DecodingSource {
     let relations: [Relation.Name: [ObjectId]]
     let entity: Entity
 
-    private func getAttributeValue(forKey key: CodingKey, type: SQLValueType) throws -> SQLValue {
+    private func getAttributeValue(forKey key: any CodingKey, type: SQLValueType) throws -> SQLValue
+    {
         let attributeName = Attribute.Name(key.stringValue)
 
         guard let attribute = entity.customAttributes[attributeName] else {
@@ -136,7 +137,7 @@ private struct DecodingSource {
         }
     }
 
-    fileprivate func getAttributeIntegerValue(forKey key: CodingKey) throws -> Int64 {
+    fileprivate func getAttributeIntegerValue(forKey key: any CodingKey) throws -> Int64 {
         let value = try getAttributeValue(forKey: key, type: .integer)
 
         guard let integerValue = value.integerValue else {
@@ -146,7 +147,7 @@ private struct DecodingSource {
         return integerValue
     }
 
-    fileprivate func getAttributeTextValue(forKey key: CodingKey) throws -> String {
+    fileprivate func getAttributeTextValue(forKey key: any CodingKey) throws -> String {
         let value = try getAttributeValue(forKey: key, type: .text)
 
         guard let textValue = value.textValue else {
@@ -156,7 +157,7 @@ private struct DecodingSource {
         return textValue
     }
 
-    fileprivate func getAttributeRealValue(forKey key: CodingKey) throws -> Double {
+    fileprivate func getAttributeRealValue(forKey key: any CodingKey) throws -> Double {
         let value = try getAttributeValue(forKey: key, type: .real)
 
         guard let realValue = value.realValue else {
@@ -166,7 +167,7 @@ private struct DecodingSource {
         return realValue
     }
 
-    fileprivate func getAttributeBlobValue(forKey key: CodingKey) throws -> Data {
+    fileprivate func getAttributeBlobValue(forKey key: any CodingKey) throws -> Data {
         let value = try getAttributeValue(forKey: key, type: .blob)
 
         guard let blobValue = value.blobValue else {
@@ -176,7 +177,7 @@ private struct DecodingSource {
         return blobValue
     }
 
-    fileprivate func containsAttributeValue(forKey key: CodingKey) -> Bool {
+    fileprivate func containsAttributeValue(forKey key: any CodingKey) -> Bool {
         if let value = attributes[.init(key.stringValue)], !value.isNull {
             return true
         } else if let modelAttribute = entity.customAttributes[.init(key.stringValue)],
@@ -188,7 +189,7 @@ private struct DecodingSource {
         }
     }
 
-    fileprivate func allowsNilAttributeValue(forKey key: CodingKey) -> Bool {
+    fileprivate func allowsNilAttributeValue(forKey key: any CodingKey) -> Bool {
         // nullが許可されていなければfalseを返す
         guard let modelAttribute = entity.customAttributes[.init(key.stringValue)],
             !modelAttribute.notNull
@@ -216,14 +217,14 @@ private struct DecodingSource {
         }
     }
 
-    fileprivate func containsRelation(forKey key: CodingKey) -> Bool {
+    fileprivate func containsRelation(forKey key: any CodingKey) -> Bool {
         guard let value = relations[.init(key.stringValue)], !value.isEmpty else {
             return false
         }
         return true
     }
 
-    fileprivate func getRelationIds(forKey key: CodingKey) throws -> [ObjectId] {
+    fileprivate func getRelationIds(forKey key: any CodingKey) throws -> [ObjectId] {
         let relationName = Relation.Name(key.stringValue)
         guard let relation = entity.relations[relationName] else {
             throw ObjectDecodingError.relationNotFound
@@ -244,7 +245,7 @@ private struct DecodingSource {
 private final class AttributesDecoder: Decoder {
     struct KeyedCotainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         let source: DecodingSource
-        let codingPath: [CodingKey]
+        let codingPath: [any CodingKey]
         var allKeys: [Key] { fatalError() }
 
         func contains(_ key: Key) -> Bool {
@@ -325,24 +326,24 @@ private final class AttributesDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
+        func nestedUnkeyedContainer(forKey key: Key) throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder() throws -> Decoder {
+        func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder(forKey key: Key) throws -> Decoder {
+        func superDecoder(forKey key: Key) throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
     let source: DecodingSource
-    let codingPath: [CodingKey]
+    let codingPath: [any CodingKey]
     private(set) var userInfo: [CodingUserInfoKey: Any] = [:]
 
-    init(source: DecodingSource, codingPath: [CodingKey]) {
+    init(source: DecodingSource, codingPath: [any CodingKey]) {
         self.source = source
         self.codingPath = codingPath
     }
@@ -351,11 +352,11 @@ private final class AttributesDecoder: Decoder {
         KeyedDecodingContainer(KeyedCotainer(source: source, codingPath: codingPath))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    func singleValueContainer() throws -> any SingleValueDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 }
@@ -363,7 +364,7 @@ private final class AttributesDecoder: Decoder {
 private final class RelationsDecoder: Decoder {
     struct KeyedCotainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         let source: DecodingSource
-        let codingPath: [CodingKey]
+        let codingPath: [any CodingKey]
         var allKeys: [Key] { fatalError() }
 
         func contains(_ key: Key) -> Bool {
@@ -384,24 +385,24 @@ private final class RelationsDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
+        func nestedUnkeyedContainer(forKey key: Key) throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder() throws -> Decoder {
+        func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder(forKey key: Key) throws -> Decoder {
+        func superDecoder(forKey key: Key) throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
     let source: DecodingSource
-    let codingPath: [CodingKey]
+    let codingPath: [any CodingKey]
     let userInfo: [CodingUserInfoKey: Any] = [:]
 
-    init(source: DecodingSource, codingPath: [CodingKey]) {
+    init(source: DecodingSource, codingPath: [any CodingKey]) {
         self.source = source
         self.codingPath = codingPath
     }
@@ -411,11 +412,11 @@ private final class RelationsDecoder: Decoder {
             KeyedCotainer(source: source, codingPath: codingPath))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    func singleValueContainer() throws -> any SingleValueDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 }
@@ -423,7 +424,7 @@ private final class RelationsDecoder: Decoder {
 private final class RelationIdsDecoder: Decoder {
     struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         let source: DecodingSource
-        let codingPath: [CodingKey]
+        let codingPath: [any CodingKey]
         var allKeys: [Key] { fatalError() }
 
         func contains(_ key: Key) -> Bool {
@@ -454,22 +455,22 @@ private final class RelationIdsDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
+        func nestedUnkeyedContainer(forKey key: Key) throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder() throws -> Decoder {
+        func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder(forKey key: Key) throws -> Decoder {
+        func superDecoder(forKey key: Key) throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
     struct UnkeyedContainer: UnkeyedDecodingContainer {
         let source: DecodingSource
-        let codingPath: [CodingKey]
+        let codingPath: [any CodingKey]
         var count: Int? {
             guard let relationIds else { return 0 }
             return relationIds.count
@@ -508,20 +509,20 @@ private final class RelationIdsDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        mutating func nestedUnkeyedContainer() throws -> UnkeyedDecodingContainer {
+        mutating func nestedUnkeyedContainer() throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        mutating func superDecoder() throws -> Decoder {
+        mutating func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
     let source: DecodingSource
-    let codingPath: [CodingKey]
+    let codingPath: [any CodingKey]
     var userInfo: [CodingUserInfoKey: Any] { fatalError() }
 
-    init(source: DecodingSource, codingPath: [CodingKey]) {
+    init(source: DecodingSource, codingPath: [any CodingKey]) {
         self.source = source
         self.codingPath = codingPath
     }
@@ -530,11 +531,11 @@ private final class RelationIdsDecoder: Decoder {
         KeyedDecodingContainer(KeyedContainer(source: source, codingPath: codingPath))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
         UnkeyedContainer(source: source, codingPath: codingPath)
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    func singleValueContainer() throws -> any SingleValueDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 }
@@ -542,7 +543,7 @@ private final class RelationIdsDecoder: Decoder {
 private final class ObjectRelationalIdDecoder: Decoder {
     struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         let objectId: ObjectId
-        var codingPath: [CodingKey] { fatalError() }
+        var codingPath: [any CodingKey] { fatalError() }
         var allKeys: [Key] { fatalError() }
 
         func contains(_ key: Key) -> Bool {
@@ -567,21 +568,21 @@ private final class ObjectRelationalIdDecoder: Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
+        func nestedUnkeyedContainer(forKey key: Key) throws -> any UnkeyedDecodingContainer {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder() throws -> Decoder {
+        func superDecoder() throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
 
-        func superDecoder(forKey key: Key) throws -> Decoder {
+        func superDecoder(forKey key: Key) throws -> any Decoder {
             throw ObjectDecodingError.unsupported
         }
     }
 
     let objectId: ObjectId
-    var codingPath: [CodingKey] { fatalError() }
+    var codingPath: [any CodingKey] { fatalError() }
     var userInfo: [CodingUserInfoKey: Any] { fatalError() }
 
     init(objectId: ObjectId) {
@@ -592,11 +593,11 @@ private final class ObjectRelationalIdDecoder: Decoder {
         KeyedDecodingContainer(KeyedContainer(objectId: objectId))
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    func singleValueContainer() throws -> any SingleValueDecodingContainer {
         throw ObjectDecodingError.unsupported
     }
 }
