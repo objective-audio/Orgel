@@ -29,7 +29,12 @@ let package = Package(
             name: "Orgel",
             dependencies: [
                 "OrgelMacros"
-            ]),
+            ],
+            swiftSettings: [
+                .enableUpcomingFeature("ExistentialAny"),
+                .enableUpcomingFeature("StrictConcurrency")
+            ]
+        ),
         .testTarget(
             name: "OrgelTests",
             dependencies: [
