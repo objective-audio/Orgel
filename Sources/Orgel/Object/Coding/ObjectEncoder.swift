@@ -43,7 +43,7 @@ private final class EncodingDestination {
         }
     }
 
-    fileprivate func setAttributeValue(_ value: SQLValue, forKey key: CodingKey) throws {
+    fileprivate func setAttributeValue(_ value: SQLValue, forKey key: any CodingKey) throws {
         let attributeName = Attribute.Name(key.stringValue)
 
         if entity.customAttributes.keys.contains(attributeName) {
@@ -53,7 +53,7 @@ private final class EncodingDestination {
         }
     }
 
-    fileprivate func setRelationIds(_ ids: [ObjectId], forKey key: CodingKey) throws {
+    fileprivate func setRelationIds(_ ids: [ObjectId], forKey key: any CodingKey) throws {
         let relationName = Relation.Name(key.stringValue)
 
         if let relation = entity.relations[relationName] {
@@ -70,7 +70,7 @@ private final class EncodingDestination {
 private final class AttributesEncoder: Encoder {
     struct Container<Key: CodingKey>: KeyedEncodingContainerProtocol {
         let destination: EncodingDestination
-        let codingPath: [CodingKey]
+        let codingPath: [any CodingKey]
 
         mutating func encodeNil(forKey key: Key) throws {
             try destination.setAttributeValue(.null, forKey: key)
@@ -146,22 +146,22 @@ private final class AttributesEncoder: Encoder {
             fatalError()
         }
 
-        mutating func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
+        mutating func nestedUnkeyedContainer(forKey key: Key) -> any UnkeyedEncodingContainer {
             fatalError()
         }
 
-        mutating func superEncoder() -> Encoder {
+        mutating func superEncoder() -> any Encoder {
             fatalError()
         }
 
-        mutating func superEncoder(forKey key: Key) -> Encoder {
+        mutating func superEncoder(forKey key: Key) -> any Encoder {
             fatalError()
         }
 
     }
 
     let destination: EncodingDestination
-    let codingPath: [CodingKey] = []
+    let codingPath: [any CodingKey] = []
     let userInfo: [CodingUserInfoKey: Any] = [:]
 
     init(destination: EncodingDestination) {
@@ -174,11 +174,11 @@ private final class AttributesEncoder: Encoder {
             Container(destination: destination, codingPath: codingPath))
     }
 
-    func unkeyedContainer() -> UnkeyedEncodingContainer {
+    func unkeyedContainer() -> any UnkeyedEncodingContainer {
         fatalError()
     }
 
-    func singleValueContainer() -> SingleValueEncodingContainer {
+    func singleValueContainer() -> any SingleValueEncodingContainer {
         fatalError()
     }
 }
@@ -186,7 +186,7 @@ private final class AttributesEncoder: Encoder {
 private final class RelationsEncoder: Encoder {
     struct Container<Key: CodingKey>: KeyedEncodingContainerProtocol {
         let destination: EncodingDestination
-        let codingPath: [CodingKey] = []
+        let codingPath: [any CodingKey] = []
 
         mutating func encodeNil(forKey key: Key) throws {
             throw ObjectEncodingError.unsupported
@@ -208,21 +208,21 @@ private final class RelationsEncoder: Encoder {
             fatalError()
         }
 
-        mutating func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
+        mutating func nestedUnkeyedContainer(forKey key: Key) -> any UnkeyedEncodingContainer {
             fatalError()
         }
 
-        mutating func superEncoder() -> Encoder {
+        mutating func superEncoder() -> any Encoder {
             fatalError()
         }
 
-        mutating func superEncoder(forKey key: Key) -> Encoder {
+        mutating func superEncoder(forKey key: Key) -> any Encoder {
             fatalError()
         }
     }
 
     let destination: EncodingDestination
-    let codingPath: [CodingKey] = []
+    let codingPath: [any CodingKey] = []
     let userInfo: [CodingUserInfoKey: Any] = [:]
 
     init(destination: EncodingDestination) {
@@ -234,11 +234,11 @@ private final class RelationsEncoder: Encoder {
         KeyedEncodingContainer(Container(destination: destination))
     }
 
-    func unkeyedContainer() -> UnkeyedEncodingContainer {
+    func unkeyedContainer() -> any UnkeyedEncodingContainer {
         fatalError()
     }
 
-    func singleValueContainer() -> SingleValueEncodingContainer {
+    func singleValueContainer() -> any SingleValueEncodingContainer {
         fatalError()
     }
 }

@@ -13,12 +13,6 @@ public actor SQLiteExecutor {
         self.url = url
     }
 
-    deinit {
-        if sqliteHandle != nil {
-            assertionFailure("SQLiteExecutor is not closed.")
-        }
-    }
-
     public func open() -> Bool {
         if sqliteHandle != nil {
             return true

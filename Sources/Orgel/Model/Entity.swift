@@ -123,11 +123,11 @@ extension Entity {
 }
 
 extension Entity: Codable {
-    public init(from decoder: Decoder) throws {
+    public init(from decoder: any Decoder) throws {
         throw ObjectDecodingError.unsupported
     }
 
-    public func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: any Encoder) throws {
         throw ObjectEncodingError.unsupported
     }
 }
