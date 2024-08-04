@@ -83,10 +83,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B6D98BE02BB84A77006481F1 /* Build configuration list for PBXNativeTarget "Orgel_iOS_Sample" */;
 			buildPhases = (
-				B6D91B372BB8F6B50034F7AE /* ShellScript */,
 				B6D98BCE2BB84A76006481F1 /* Sources */,
 				B6D98BCF2BB84A76006481F1 /* Frameworks */,
 				B6D98BD02BB84A76006481F1 /* Resources */,
+				B6FBB4B32C5F35F4007DD30E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -146,7 +146,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B6D91B372BB8F6B50034F7AE /* ShellScript */ = {
+		B6FBB4B32C5F35F4007DD30E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -162,7 +162,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../../script/format.sh\n";
+			shellScript = "(cd ../../ && ./script/format.sh)\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
