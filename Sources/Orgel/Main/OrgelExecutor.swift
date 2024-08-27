@@ -20,10 +20,10 @@ public actor OrgelExecutor {
     ) async throws
         -> SyncedResultData
     {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let result = try await sqliteExecutor.insertObjects(model: model, values: values)
-            return try await data.loadInserted(result)
+        return try await queue.execute {
+            let result = try await self.sqliteExecutor.insertObjects(
+                model: self.model, values: values)
+            return try await self.data.loadInserted(result)
         }
     }
 
@@ -42,22 +42,22 @@ public actor OrgelExecutor {
     }
 
     public func fetchSyncedObjects(_ option: FetchOption) async throws -> SyncedResultData {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let objectDatas = try await sqliteExecutor.fetchObjectDatas(option, model: model)
-            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
-                objectDatas, model: model)
-            return try await data.loadFetched(objectDatas: idReplacedObjectDatas)
+        return try await queue.execute {
+            let objectDatas = try await self.sqliteExecutor.fetchObjectDatas(
+                option, model: self.model)
+            let idReplacedObjectDatas = await self.loadingIdPool.idReplacedObjectDatas(
+                objectDatas, model: self.model)
+            return try await self.data.loadFetched(objectDatas: idReplacedObjectDatas)
         }
     }
 
     public func fetchReadOnlyObjects(_ option: FetchOption) async throws -> ReadOnlyResultData {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let objectDatas = try await sqliteExecutor.fetchObjectDatas(option, model: model)
-            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
-                objectDatas, model: model)
-            return try makeReadOnlyObjects(objectDatas: idReplacedObjectDatas)
+        return try await queue.execute {
+            let objectDatas = try await self.sqliteExecutor.fetchObjectDatas(
+                option, model: self.model)
+            let idReplacedObjectDatas = await self.loadingIdPool.idReplacedObjectDatas(
+                objectDatas, model: self.model)
+            return try self.makeReadOnlyObjects(objectDatas: idReplacedObjectDatas)
         }
     }
 
@@ -94,52 +94,49 @@ public actor OrgelExecutor {
     }
 
     public func clear() async throws {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let info = try await sqliteExecutor.clear(model: model)
-            await loadingIdPool.clear()
-            await data.loadCleared(info: info)
+        return try await queue.execute {
+            let info = try await self.sqliteExecutor.clear(model: self.model)
+            await self.loadingIdPool.clear()
+            await self.data.loadCleared(info: info)
         }
     }
 
     public func save() async throws -> SyncedResultData {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let changedDatas = try await data.changedObjectDatasForSave()
-            let result = try await sqliteExecutor.save(model: model, changedDatas: changedDatas)
-            await loadingIdPool.set(from: result.savedDatas)
-            return try await data.loadSaved(result)
+        return try await queue.execute {
+            let changedDatas = try await self.data.changedObjectDatasForSave()
+            let result = try await self.sqliteExecutor.save(
+                model: self.model, changedDatas: changedDatas)
+            await self.loadingIdPool.set(from: result.savedDatas)
+            return try await self.data.loadSaved(result)
         }
     }
 
     public func revert(saveId: Int64) async throws -> SyncedResultData {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let result = try await sqliteExecutor.revert(model: model, revertSaveId: saveId)
-            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
-                result.revertedDatas, model: model)
-            return try await data.loadReverted(
+        return try await queue.execute {
+            let result = try await self.sqliteExecutor.revert(
+                model: self.model, revertSaveId: saveId)
+            let idReplacedObjectDatas = await self.loadingIdPool.idReplacedObjectDatas(
+                result.revertedDatas, model: self.model)
+            return try await self.data.loadReverted(
                 (revertedDatas: idReplacedObjectDatas, info: result.info))
         }
     }
 
     public func purge() async throws {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let info = try await sqliteExecutor.purge(model: model)
-            await data.loadPurged(info: info)
+        return try await queue.execute {
+            let info = try await self.sqliteExecutor.purge(model: self.model)
+            await self.data.loadPurged(info: info)
         }
     }
 
     public func reset() async throws -> SyncedResultData {
-        let taskId = await queue.addTask()
-        return try await queue.execute(id: taskId) {
-            let ids = await data.changedObjectIdsForReset()
-            let objectDatas = try await sqliteExecutor.fetchObjectDatas(
-                .init(stableIds: ids), model: model)
-            let idReplacedObjectDatas = await loadingIdPool.idReplacedObjectDatas(
-                objectDatas, model: model)
-            return try await data.loadReset(objectDatas: idReplacedObjectDatas)
+        return try await queue.execute {
+            let ids = await self.data.changedObjectIdsForReset()
+            let objectDatas = try await self.sqliteExecutor.fetchObjectDatas(
+                .init(stableIds: ids), model: self.model)
+            let idReplacedObjectDatas = await self.loadingIdPool.idReplacedObjectDatas(
+                objectDatas, model: self.model)
+            return try await self.data.loadReset(objectDatas: idReplacedObjectDatas)
         }
     }
 }
