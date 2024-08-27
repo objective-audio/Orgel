@@ -9,7 +9,7 @@ actor SerialTaskQueue {
         let lastTask = self.lastTask
 
         let task = Task {
-            let _ = try await lastTask?.value
+            let _ = try? await lastTask?.value
             return try await handler()
         }
 
