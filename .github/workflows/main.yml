@@ -18,7 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: macos-14
+    runs-on: macos-15
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -26,10 +26,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Select Xcode
-        run: 
-          sudo xcode-select -s '/Applications/Xcode_15.2.app/Contents/Developer'
 
       - name: Run Mac tests
         run:
@@ -52,5 +48,5 @@ jobs:
           xcodebuild
             -scheme Orgel
             -configuration debug
-            -destination 'platform=iOS Simulator,name=iPhone 15'
+            -destination 'platform=iOS Simulator,name=iPhone 16'
             clean build
